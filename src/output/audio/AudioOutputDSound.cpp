@@ -23,7 +23,6 @@
 #include "QtAV/private/AudioOutputBackend.h"
 #include "QtAV/private/mkid.h"
 #include "QtAV/private/factory.h"
-#include <QtCore/QLibrary>
 #include <QtCore/QSemaphore>
 #include <QtCore/QThread>
 #include <QtCore/QPointer>
