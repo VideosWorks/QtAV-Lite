@@ -571,7 +571,7 @@ void AVDemuxThread::run()
                 m_repeat_current++;
                 qDebug() << " m_repeat_current = " << m_repeat_current;
                 qDebug() << " m_repeat_max = " << m_repeat_max;
-                seek(qint64(0), AccurateSeek);
+                seek(qint64(0), qint64(0), AccurateSeek);
             }
             // if avthread may skip 1st eof packet because of a/v sync
             const int kMaxEof = 1;//if buffer packet, we can use qMax(aqueue->bufferValue(), vqueue->bufferValue()) and not call blockEmpty(false);
