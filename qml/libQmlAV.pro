@@ -2,18 +2,8 @@ TEMPLATE = lib
 CONFIG += qt plugin
 TARGET = QmlAV
 QT += quick qml
-CONFIG *= qmlav-buildlib
-#QMAKE_RPATHLINKDIR
-#CONFIG *= qml_module relative_qt_rpath
 
-#var with '_' can not pass to pri?
 PROJECTROOT = $$PWD/..
-!include($$PROJECTROOT/src/libQtAV.pri): error("could not find libQtAV.pri")
-!include(libQmlAV.pri): error("could not find libQmlAV.pri")
-preparePaths($$OUT_PWD/../out)
-#https://github.com/wang-bin/QtAV/issues/368#issuecomment-73246253
-#http://qt-project.org/forums/viewthread/38438
-# mkspecs/features/qml_plugin.prf mkspecs/features/qml_module.prf
 TARGETPATH = QtAV
 URI = $$replace(TARGETPATH, "/", ".")
 qtAtLeast(5, 3): QMAKE_MOC_OPTIONS += -Muri=$$URI
@@ -105,16 +95,6 @@ HEADERS *= \
 greaterThan(QT_MINOR_VERSION, 1) {
   HEADERS += QmlAV/QuickFBORenderer.h
   SOURCES += QuickFBORenderer.cpp
-}
-
-unix:!android:!mac {
-#debian
-qml_module_files = qmldir Video.qml plugins.qmltypes libQmlAV.so
-DEB_INSTALL_LIST = $$join(qml_module_files, \\n.$$[QT_INSTALL_QML]/QtAV/, .$$[QT_INSTALL_QML]/QtAV/)
-deb_install_list.target = qml-module-qtav.install
-deb_install_list.commands = echo \"$$join(DEB_INSTALL_LIST, \\n)\" >$$PROJECTROOT/debian/$${deb_install_list.target}
-QMAKE_EXTRA_TARGETS += deb_install_list
-target.depends += $${deb_install_list.target}
 }
 
 target.path = $$[QT_INSTALL_QML]/QtAV

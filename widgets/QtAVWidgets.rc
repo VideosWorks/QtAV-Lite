@@ -18,13 +18,13 @@ BEGIN
     BEGIN
         BLOCK "000004b0"
         BEGIN
-            VALUE "CompanyName", "Shanghai University->S3 Graphics->Deepin | wbsecg1@gmail.com"
-            VALUE "FileDescription", "QtAVWidgets module. QtAV Multimedia framework. http://qtav.org"
+            VALUE "CompanyName", "Wang Bin"
+            VALUE "FileDescription", "C++ Application Development Framework"
             VALUE "FileVersion", QTAVWIDGETS_VERSION_STR ".0"
-            VALUE "LegalCopyright", "Copyright (C) 2012-2016 WangBin, wbsecg1@gmail.com"
+            VALUE "LegalCopyright", "Copyright (C) 2012-2018 Wang Bin"
             VALUE "InternalName", "QtAV Widgets"
-            VALUE "OriginalFilename", "QtAVWidgets.dll"
-            VALUE "ProductName", "QtAV Widgets"
+            VALUE "OriginalFilename", "Qt5AVWidgets.dll"
+            VALUE "ProductName", "Qt5"
             VALUE "ProductVersion", QTAVWIDGETS_VERSION_STR ".0"
         END
     END

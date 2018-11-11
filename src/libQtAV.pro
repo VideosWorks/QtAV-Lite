@@ -1,37 +1,13 @@
 TEMPLATE = lib
-MODULE_INCNAME = QtAV # for mac framework. also used in install_sdk.pro
-TARGET = QtAV
-QT += core gui
-#CONFIG *= ltcg
-greaterThan(QT_MAJOR_VERSION, 4) {
-  contains(QT_CONFIG, opengl) {
-      CONFIG *= config_opengl
-      greaterThan(QT_MINOR_VERSION, 3) {
-        CONFIG *= config_openglwindow
-      }
-  }
-} else {
-  config_gl: QT += opengl
-}
-CONFIG *= qtav-buildlib
-static: CONFIG *= static_ffmpeg
-INCLUDEPATH += $$[QT_INSTALL_HEADERS] # TODO: ffmpeg dir
-
-#mac: simd.prf will load qt_build_config and the result is soname will prefixed with QT_INSTALL_LIBS and link flag will append soname after QMAKE_LFLAGS_SONAME
-config_libcedarv: CONFIG *= neon config_simd #need by qt4 addSimdCompiler(). neon or config_neon is required because tests/arch can not detect neon
-## sse2 sse4_1 may be defined in Qt5 qmodule.pri but is not included. Qt4 defines sse and sse2
-sse4_1|config_sse4_1|contains(TARGET_ARCH_SUB, sse4.1): CONFIG *= sse4_1 config_simd
-sse2|config_sse2|contains(TARGET_ARCH_SUB, sse2): CONFIG *= sse2 config_simd
-CONFIG(debug, debug|release): DEFINES += DEBUG
-#release: DEFINES += QT_NO_DEBUG_OUTPUT
-#var with '_' can not pass to pri?
+TARGET = Qt$${QT_MAJOR_VERSION}AV
+CONFIG(debug, debug|release): DEFINES *= DEBUG
 PROJECTROOT = $$PWD/..
-!include(libQtAV.pri): error("could not find libQtAV.pri")
-preparePaths($$OUT_PWD/../out)
-exists($$PROJECTROOT/extra/qtLongName(include)): INCLUDEPATH += $$PROJECTROOT/extra/qtLongName(include)
-exists($$PROJECTROOT/extra/qtLongName(lib)): LIBS += -L$$PROJECTROOT/extra/qtLongName(lib)
-staticlib: DEFINES += BUILD_QTAV_STATIC
-
+CONFIG(shared, static|shared) {
+    RC_FILE = QtAV.rc
+    CONFIG *= dll
+} else:CONFIG(static, static|shared) {
+    DEFINES *= BUILD_QTAV_STATIC
+}
 config_uchardet {
   DEFINES += LINK_UCHARDET
   LIBS *= -luchardet
@@ -45,95 +21,19 @@ exists($$PROJECTROOT/contrib/capi/capi.pri) {
 } else {
   warning("contrib/capi is missing. run 'git submodule update --init' first")
 }
-
-RESOURCES += QtAV.qrc \
+RESOURCES += \
+    images_svg.qrc \
     shaders/shaders.qrc
 
-!rc_file {
-    RC_ICONS = QtAV.ico
-    QMAKE_TARGET_COMPANY = "Shanghai University->S3 Graphics->Deepin | wbsecg1@gmail.com"
-    QMAKE_TARGET_DESCRIPTION = "QtAV Multimedia framework. http://qtav.org"
-    QMAKE_TARGET_COPYRIGHT = "Copyright (C) 2012-2017 WangBin, wbsecg1@gmail.com"
-    QMAKE_TARGET_PRODUCT = "QtAV"
-} else:win32 {
-    RC_FILE = QtAV.rc
-#no depends for rc file by default, even if rc includes a header. Makefile target use '/' as default, so not works iwth win cmd
-    rc.target = $$clean_path($$RC_FILE) #rc obj depends on clean path target
-    rc.depends = $$PWD/QtAV/version.h
-#why use multiple rule failed? i.e. add a rule without command
-    isEmpty(QMAKE_SH) {
-        rc.commands = @copy /B $$system_path($$RC_FILE)+,, #change file time
-    } else {
-        rc.commands = @touch $$RC_FILE #change file time
-    }
-    QMAKE_EXTRA_TARGETS += rc
-}
-
-OTHER_FILES += $$RC_FILE QtAV.svg
-TRANSLATIONS = i18n/QtAV_zh_CN.ts i18n/QtAV.ts
-
-sse4_1 {
-  CONFIG += sse2 #only sse4.1 is checked. sse2 now can be disabled if sse4.1 is disabled
-  DEFINES += QTAV_HAVE_SSE4_1=1
-  !config_simd: CONFIG *= simd
-  SSE4_1_SOURCES += utils/CopyFrame_SSE4.cpp
-}
-sse2 {
-  DEFINES += QTAV_HAVE_SSE2=1
-  !config_simd: CONFIG *= simd
-  SSE2_SOURCES += utils/CopyFrame_SSE2.cpp
-}
-
-win32 {
-# cross build, old vc etc.
-  !config_dx: INCLUDEPATH += $$PROJECTROOT/contrib/dxsdk
-}
-*msvc*:!winrt {
-#link FFmpeg and portaudio which are built by gcc need /SAFESEH:NO
-  win32-msvc2010|win32-msvc2008|win32-msvc2012 {
-    QMAKE_LFLAGS *= /DEBUG #workaround for CoInitializeEx() and other symbols not found at runtime
-    INCLUDEPATH *= compat/msvc # vs2012 only has stdint.h
-  }
-    debug: QMAKE_LFLAGS += /SAFESEH:NO
-#CXXFLAGS debug: /MTd
-    !static:QMAKE_LFLAGS *= /NODEFAULTLIB:libcmt.lib /NODEFAULTLIB:libcmtd.lib #for msbuild vs2013
-}
 capi {
-contains(QT_CONFIG, egl)|contains(QT_CONFIG, dynamicgl)|contains(QT_CONFIG, opengles2) {
-  CONFIG *= enable_egl
-  !ios {
-    winrt: DEFINES += CAPI_LINK_EGL #required by capi_egl.*
-    DEFINES += QTAV_HAVE_EGL_CAPI=1
+DEFINES += QTAV_HAVE_EGL_CAPI=1
     HEADERS *= capi/egl_api.h
     SOURCES *= capi/egl_api.cpp
-  }
 }
-}
-enable_egl:greaterThan(QT_MAJOR_VERSION,4):qtHaveModule(x11extras): QT *= x11extras
 
-config_gl|config_opengl {
-  contains(QT_CONFIG, opengl):!contains(QT_CONFIG, opengles2): CONFIG *= enable_desktopgl
-}
 #UINT64_C: C99 math features, need -D__STDC_CONSTANT_MACROS in CXXFLAGS
 DEFINES += __STDC_CONSTANT_MACROS
-android {
-  CONFIG *= config_opensl
-  SOURCES *= jmi/jmi.cpp
-  qtHaveModule(androidextras) { #qt5.2 has QAndroidJniObject
-    QT *= androidextras #QPlatformNativeInterface get "QtActivity"
-    SOURCES *= io/AndroidIO.cpp
-    SOURCES *= codec/video/VideoDecoderMediaCodec.cpp
-    exists($$[QT_INSTALL_HEADERS]/MediaCodecTextureStandalone.h) {
-      DEFINES *= MEDIACODEC_TEXTURE
-      LIBS *= -lqtav-mediacodec
-    }
-  }
-}
-config_x11 {
-  DEFINES += QTAV_HAVE_X11=1
-  SOURCES *= filter/X11FilterContext.cpp
-  LIBS *= -lX11
-}
+
 config_swresample {
     DEFINES += QTAV_HAVE_SWRESAMPLE=1
     SOURCES += AudioResamplerFF.cpp
@@ -148,26 +48,12 @@ config_avdevice { #may depends on avfilter
     DEFINES += QTAV_HAVE_AVDEVICE=1
     LIBS *= -lavdevice
     static_ffmpeg {
-      win32 {
-        LIBS *= -lgdi32 -loleaut32 -lshlwapi #shlwapi: desktop >= xp only
-      } else:linux {
-        LIBS *= -lXv #-lX11 -lxcb -lxcb-shm -lxcb-xfixes -lxcb-render -lxcb-shape
-      } else:mac { # static ffmpeg
-        LIBS += -framework Foundation -framework CoreMedia -framework QuartzCore -framework CoreGraphics -framework CoreVideo
-        ios {
-          LIBS += -framework AVFoundation
-        } else {
-          LIBS += -framework QTKit
-      # assume avdevice targets to the same version as Qt and always >= 10.6
-         !isEqual(QMAKE_MACOSX_DEPLOYMENT_TARGET, 10.6): LIBS += -framework AVFoundation
-        }
-      }
+      LIBS *= -lgdi32 -loleaut32 -lshlwapi #shlwapi: desktop >= xp only
     }
 }
 config_avfilter {
     DEFINES += QTAV_HAVE_AVFILTER=1
     LIBS += -lavfilter
-    mac:!ios:static_ffmpeg: LIBS += -framework AppKit
 }
 config_ipp {
     DEFINES += QTAV_HAVE_IPP=1
@@ -184,23 +70,11 @@ config_ipp {
     LIBS *= -L$$(IPPROOT)/../compiler/lib/$$IPPARCH -lsvml -limf
     #omp for static link. _t is multi-thread static link
 }
-mac|ios {
-  CONFIG *= config_openal
-  SOURCES += output/audio/AudioOutputAudioToolbox.cpp
-  LIBS += -framework AudioToolbox
-  LIBS += -Wl,-unexported_symbols_list,$$PWD/unexport.list
-} else:!win32 {
-  #LIBS += -Wl,--exclude-libs,ALL
-}
+
 win32: {
   HEADERS += output/audio/xaudio2_compat.h
   SOURCES += output/audio/AudioOutputXAudio2.cpp
   DEFINES *= QTAV_HAVE_XAUDIO2=1
-  winrt {
-    LIBS += -lxaudio2 #only for xbox or >=win8
-  } else {
-    LIBS += -lole32 #CoInitializeEx for vs2008, but can not find the symbol at runtime
-  }
 }
 config_dsound:!winrt {
     SOURCES += output/audio/AudioOutputDSound.cpp
@@ -218,20 +92,9 @@ config_openal {
     SOURCES *= capi/openal_api.cpp
     DEFINES *= QTAV_HAVE_OPENAL=1
     static_openal: DEFINES += AL_LIBTYPE_STATIC # openal-soft AL_API dllimport error. mac's macro is AL_BUILD_LIBRARY
-    ios: CONFIG *= config_openal_link
     !capi|config_openal_link|static_openal {
       DEFINES *= CAPI_LINK_OPENAL
-      win32 {
-        LIBS += -lOpenAL32 -lwinmm
-      } else:mac {
-        LIBS += -framework OpenAL
-        DEFINES += HEADER_OPENAL_PREFIX
-      } else:blackberry {
-        LIBS += -lOpenAL
-      } else {
-        LIBS += -lopenal
-        static_openal:!android: LIBS += -lasound
-      }
+      LIBS += -lOpenAL32 -lwinmm
     }
 }
 config_opensl {
@@ -279,23 +142,13 @@ config_d3d11va {
   SOURCES += directx/SurfaceInteropD3D11.cpp
   HEADERS += directx/D3D11VP.h
   SOURCES += directx/D3D11VP.cpp
-  enable_egl {
-    SOURCES += directx/SurfaceInteropD3D11EGL.cpp
-  }
-  enable_desktopgl {
-    SOURCES += directx/SurfaceInteropD3D11GL.cpp
-  }
+  SOURCES += directx/SurfaceInteropD3D11EGL.cpp
   winrt: LIBS *= -ld3d11
 }
 win32:!winrt {
   HEADERS += directx/SurfaceInteropD3D9.h
   SOURCES += directx/SurfaceInteropD3D9.cpp
-  enable_egl {
-    SOURCES += directx/SurfaceInteropD3D9EGL.cpp
-  }
-  enable_desktopgl {
-    SOURCES += directx/SurfaceInteropD3D9GL.cpp
-  }
+  SOURCES += directx/SurfaceInteropD3D9EGL.cpp
 }
 config_dxva {
   CONFIG *= d3dva
@@ -317,29 +170,7 @@ config_vaapi* {
   #}
     LIBS *= -lva -lX11 #dynamic load va-glx va-x11 using dllapi. -lX11: used by tfp
 }
-config_libcedarv {
-    DEFINES *= QTAV_HAVE_CEDARV=1
-    QMAKE_CXXFLAGS *= -march=armv7-a
-# Can not use NEON_SOURCE because it can not work with moc
-    SOURCES += codec/video/VideoDecoderCedarv.cpp
-    !config_simd: CONFIG *= simd #addSimdCompiler xxx_ASM
-    CONFIG += no_clang_integrated_as #see qtbase/src/gui/painting/painting.pri. add -fno-integrated-as from simd.prf
-    NEON_ASM += codec/video/tiled_yuv.S #from libvdpau-sunxi
-    LIBS += -lvecore -lcedarv
-    OTHER_FILES += $$NEON_ASM
-}
-mac {
-  HEADERS *= codec/video/SurfaceInteropCV.h
-  SOURCES *= codec/video/SurfaceInteropCV.cpp \
-             codec/video/SurfaceInteropIOSurface.mm
-  ios {
-    OBJECTIVE_SOURCES *= codec/video/SurfaceInteropCVOpenGLES.mm
-  } else {
-    #CONFIG += config_vda
-    #SOURCES *= codec/video/SurfaceInteropCVOpenGL.cpp
-  }
-  LIBS += -framework CoreVideo -framework CoreFoundation
-}
+
 config_vda {
     DEFINES *= QTAV_HAVE_VDA=1
     SOURCES += codec/video/VideoDecoderVDA.cpp
@@ -406,8 +237,7 @@ config_libass {
   SOURCES *= capi/ass_api.cpp
   SOURCES *= subtitle/SubtitleProcessorLibASS.cpp
 }
-# mac is -FQTDIR we need -LQTDIR
-LIBS *= -L$$[QT_INSTALL_LIBS] -lavcodec -lavformat -lswscale -lavutil
+LIBS *= -lavcodec -lavformat -lswscale -lavutil
 win32 {
   HEADERS *= utils/DirectXHelper.h
   SOURCES *= utils/DirectXHelper.cpp
@@ -422,13 +252,7 @@ winrt {
 # use old libva.so to link against
 glibc_compat: *linux*: LIBS += -lrt  # do not use clock_gettime in libc, GLIBC_2.17 is not available on old system
 static_ffmpeg {
-# libs needed by mac static ffmpeg. corefoundation: vda, avdevice. coca: vf_coreimage
-  mac|ios: LIBS += -liconv -lbz2 -llzma -lz -framework CoreFoundation -framework Security # -framework Cocoa Cocoa is not available on ios10
-  win32: LIBS *= -lws2_32 -lstrmiids -lvfw32 -luuid
-  !mac:*g++* {
-    LIBS *= -lz
-    QMAKE_LFLAGS *= -Wl,-Bsymbolic #link to static lib, see http://ffmpeg.org/platform.html
-  }
+LIBS *= -lws2_32 -lstrmiids -lvfw32 -luuid
 }
 SOURCES += \
     AVCompat.cpp \
@@ -592,72 +416,3 @@ HEADERS *= \
     utils/internal.h \
     output/OutputSet.h \
     ColorTransform.h
-# from mkspecs/features/qt_module.prf
-# OS X and iOS frameworks
-mac_framework { # from common.pri
-   #QMAKE_FRAMEWORK_VERSION = 4.0
-   CONFIG += lib_bundle sliced_bundle qt_framework
-   CONFIG -= qt_install_headers #no need to install these as well
-   !debug_and_release|!build_all|CONFIG(release, debug|release) {
-        FRAMEWORK_HEADERS.version = Versions
-        FRAMEWORK_HEADERS.files = $$SDK_HEADERS
-        FRAMEWORK_HEADERS.path = Headers
-# 5.4(beta) workaround for wrong include path
-# TODO: why <QtCore/qglobal.h> can be found?
-        qtAtLeast(5,3): FRAMEWORK_HEADERS.path = Headers/$$MODULE_INCNAME
-        FRAMEWORK_PRIVATE_HEADERS.version = Versions
-        FRAMEWORK_PRIVATE_HEADERS.files = $$SDK_PRIVATE_HEADERS
-        FRAMEWORK_PRIVATE_HEADERS.path = Headers/$$VERSION/$$MODULE_INCNAME/private
-        QMAKE_BUNDLE_DATA += FRAMEWORK_HEADERS FRAMEWORK_PRIVATE_HEADERS
-   }
-}
-
-mac {
-   CONFIG += explicitlib
-   macx-g++ {
-       QMAKE_CFLAGS += -fconstant-cfstrings
-       QMAKE_CXXFLAGS += -fconstant-cfstrings
-   }
-}
-
-unix:!mac:!cross_compile {
-icon.files = $$PWD/$${TARGET}.svg
-icon.path = /usr/share/icons/hicolor/scalable/apps
-INSTALLS += icon
-#debian
-DEB_INSTALL_LIST = .$$[QT_INSTALL_LIBS]/libQt*AV.so.*
-libqtav.target = libqtav.install
-libqtav.commands = echo \"$$join(DEB_INSTALL_LIST, \\n)\" >$$PROJECTROOT/debian/$${libqtav.target}
-QMAKE_EXTRA_TARGETS += libqtav
-target.depends *= $${libqtav.target}
-
-DEB_INSTALL_LIST = $$join(SDK_HEADERS, \\n.$$[QT_INSTALL_HEADERS]/, .$$[QT_INSTALL_HEADERS]/)
-DEB_INSTALL_LIST += .$$[QT_INSTALL_LIBS]/libQt*AV.prl .$$[QT_INSTALL_LIBS]/libQt*AV.so
-MKSPECS_DIR=$$[QT_HOST_DATA]/mkspecs # we only build deb for qt5, so QT_HOST_DATA is fine. qt4 can use $$[QMAKE_MKSPECS]
-DEB_INSTALL_LIST += .$${MKSPECS_DIR}/features/av.prf .$${MKSPECS_DIR}/modules/qt_lib_av.pri
-qtav_dev.target = qtav-dev.install
-qtav_dev.commands = echo \"$$join(DEB_INSTALL_LIST, \\n)\" >$$PROJECTROOT/debian/$${qtav_dev.target}
-QMAKE_EXTRA_TARGETS += qtav_dev
-target.depends *= $${qtav_dev.target}
-
-DEB_INSTALL_LIST = $$join(SDK_PRIVATE_HEADERS, \\n.$$[QT_INSTALL_HEADERS]/QtAV/*/, .$$[QT_INSTALL_HEADERS]/QtAV/*/)
-DEB_INSTALL_LIST += .$${MKSPECS_DIR}/modules/qt_lib_av_private.pri
-qtav_private_dev.target = qtav-private-dev.install
-qtav_private_dev.commands = echo \"$$join(DEB_INSTALL_LIST, \\n)\" >$$PROJECTROOT/debian/$${qtav_private_dev.target}
-QMAKE_EXTRA_TARGETS += qtav_private_dev
-target.depends *= $${qtav_private_dev.target}
-
-greaterThan(QT_MAJOR_VERSION, 4) {
-  qtav_dev_links.target = qtav-dev.links
-  qtav_dev_links.commands = echo \"$$[QT_INSTALL_LIBS]/libQtAV.so $$[QT_INSTALL_LIBS]/libQt$${QT_MAJOR_VERSION}AV.so\" >$$PROJECTROOT/debian/$${qtav_dev_links.target}
-  QMAKE_EXTRA_TARGETS *= qtav_dev_links
-  target.depends *= $${qtav_dev_links.target}
-} #Qt>=5
-} #debian
-
-MODULE_INCNAME = QtAV
-MODULE_VERSION = $$VERSION
-#use Qt version. limited by qmake
-# windows: Qt5AV.dll, not Qt1AV.dll
-!mac_framework: MODULE_VERSION = $${QT_MAJOR_VERSION}.$${QT_MINOR_VERSION}.$${QT_PATCH_VERSION}
-!contains(QMAKE_HOST.os, Windows):include($$PROJECTROOT/deploy.pri)

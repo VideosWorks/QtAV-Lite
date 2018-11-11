@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>QtAV.png</file>
+    </qresource>
+</RCC>
