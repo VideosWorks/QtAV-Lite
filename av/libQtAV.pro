@@ -7,6 +7,7 @@ CONFIG(shared, static|shared) {
 } else:CONFIG(static, static|shared) {
     DEFINES *= BUILD_QTAV_STATIC
 }
+!CONFIG(enable_dx): INCLUDEPATH += $${ROOT}/contrib/dxsdk
 CONFIG(sse4_1)|CONFIG(enable_sse4_1)|contains(TARGET_ARCH_SUB, sse4.1): CONFIG *= sse4_1 config_simd
 CONFIG(sse2)|CONFIG(enable_sse2)|contains(TARGET_ARCH_SUB, sse2): CONFIG *= sse2 config_simd
 CONFIG(sse4_1) {
