@@ -1,7 +1,7 @@
 TARGET = Qt$${QT_MAJOR_VERSION}AV
 include(../common.pri)
 TEMPLATE = lib
-qtHaveModule(opengl): QT *= opengl
+QT *= opengl
 CONFIG(shared, static|shared) {
     RC_FILE = QtAV.rc
     CONFIG *= dll
