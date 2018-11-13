@@ -1,14 +1,14 @@
 TEMPLATE = subdirs
 CONFIG -= ordered
-libqtav.file = av/libQtAV.pro
+libqtav.file = av/av.pro
 SUBDIRS *= libqtav
 qtHaveModule(widgets):!CONFIG(no_widgets) {
-    libqtavwidgets.file = avwidgets/libQtAVWidgets.pro
+    libqtavwidgets.file = avwidgets/avwidgets.pro
     libqtavwidgets.depends *= libqtav
     SUBDIRS *= libqtavwidgets
 }
 qtHaveModule(quick):!CONFIG(no_qml) {
-    libqmlav.file = qmlav/libQmlAV.pro
+    libqmlav.file = qmlav/qmlav.pro
     libqmlav.depends *= libqtav
     SUBDIRS *= libqmlav
 }
