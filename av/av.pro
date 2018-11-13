@@ -59,7 +59,7 @@ CONFIG(enable_avresample) {
 CONFIG(enable_avdevice) {
     DEFINES *= QTAV_HAVE_AVDEVICE
     LIBS *= -lavdevice
-    CONFIG(static_ffmpeg): LIBS *= -lgdi32 -loleaut32 -lshlwapi
+    CONFIG(static_ffmpeg): LIBS *= -lgdi32 -lgdiplus -loleaut32 -lshlwapi
 }
 CONFIG(enable_avfilter) {
     DEFINES *= QTAV_HAVE_AVFILTER
@@ -161,7 +161,7 @@ CONFIG(enable_libass) {
         subtitle/SubtitleProcessorLibASS.cpp
 }
 LIBS *= -lavcodec -lavformat -lswscale -lavutil -lUser32
-CONFIG(static_ffmpeg): LIBS *= -lws2_32 -lstrmiids -lvfw32 -luuid
+CONFIG(static_ffmpeg): LIBS *= -lws2_32 -lstrmiids -lvfw32 -luuid -lSecur32 -lBcrypt -llegacy_stdio_definitions
 SOURCES += \
     AVCompat.cpp \
     QtAV_Global.cpp \
