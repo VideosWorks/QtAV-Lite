@@ -45,7 +45,7 @@ CONFIG(enable_capi) {
     SOURCES *= capi/egl_api.cpp
 }
 #UINT64_C: C99 math features, need -D__STDC_CONSTANT_MACROS in CXXFLAGS
-#DEFINES *= __STDC_CONSTANT_MACROS
+DEFINES *= __STDC_CONSTANT_MACROS
 CONFIG(enable_swresample) {
     DEFINES *= QTAV_HAVE_SWRESAMPLE
     SOURCES *= AudioResamplerFF.cpp
