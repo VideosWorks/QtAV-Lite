@@ -1,7 +1,8 @@
 TARGET = Qt$${QT_MAJOR_VERSION}AV
 include(../common.pri)
 TEMPLATE = lib
-QT *= opengl
+#QT *= opengl
+DEFINES *= BUILD_QTAV_LIB
 CONFIG(shared, static|shared) {
     RC_FILE = QtAV.rc
     CONFIG *= dll
@@ -9,8 +10,8 @@ CONFIG(shared, static|shared) {
     DEFINES *= BUILD_QTAV_STATIC
 }
 !CONFIG(enable_dx): INCLUDEPATH += $${ROOT}/contrib/dxsdk
-CONFIG(sse4_1)|CONFIG(enable_sse4_1)|contains(TARGET_ARCH_SUB, sse4.1): CONFIG *= sse4_1 config_simd
-CONFIG(sse2)|CONFIG(enable_sse2)|contains(TARGET_ARCH_SUB, sse2): CONFIG *= sse2 config_simd
+CONFIG(sse4_1)|CONFIG(enable_sse4_1)|contains(TARGET_ARCH_SUB, sse4.1): CONFIG *= sse4_1 enable_simd
+CONFIG(sse2)|CONFIG(enable_sse2)|contains(TARGET_ARCH_SUB, sse2): CONFIG *= sse2 enable_simd
 CONFIG(sse4_1) {
     CONFIG *= sse2
     DEFINES *= QTAV_HAVE_SSE4_1
@@ -129,8 +130,8 @@ CONFIG(enable_d3d11va) {
         codec/video/VideoDecoderD3D11.cpp \
         directx/SurfaceInteropD3D11.cpp \
         directx/D3D11VP.cpp \
-        directx/SurfaceInteropD3D11EGL.cpp \
-        directx/SurfaceInteropD3D11GL.cpp
+        directx/SurfaceInteropD3D11EGL.cpp
+        #directx/SurfaceInteropD3D11GL.cpp
     HEADERS *= \
         directx/SurfaceInteropD3D11.h \
         directx/D3D11VP.h
@@ -248,7 +249,7 @@ SOURCES += \
     utils/DirectXHelper.cpp \
     directx/SurfaceInteropD3D9.cpp \
     directx/SurfaceInteropD3D9EGL.cpp \
-    directx/SurfaceInteropD3D9GL.cpp \
+    #directx/SurfaceInteropD3D9GL.cpp \
     output/audio/AudioOutputXAudio2.cpp
 SDK_HEADERS *= \
     QtAV/QtAV \

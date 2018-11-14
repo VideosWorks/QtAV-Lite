@@ -10,8 +10,8 @@ qtHaveModule(widgets):!CONFIG(no_widgets) {
     libqtavwidgets.depends *= libqtav
     SUBDIRS *= libqtavwidgets
 }
-qtHaveModule(quick):!CONFIG(no_qml) {
-    libqmlav.file = qmlav/qmlav.pro
-    libqmlav.depends *= libqtav
-    SUBDIRS *= libqmlav
-}
+#qtHaveModule(quick):!CONFIG(no_qml) {
+    #libqmlav.file = qmlav/qmlav.pro
+    #libqmlav.depends *= libqtav
+    #SUBDIRS *= libqmlav
+#}
