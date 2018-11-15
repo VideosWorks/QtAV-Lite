@@ -49,22 +49,25 @@ DEFINES *= __STDC_CONSTANT_MACROS
 CONFIG(enable_swresample) {
     DEFINES *= QTAV_HAVE_SWRESAMPLE
     SOURCES *= AudioResamplerFF.cpp
-    LIBS *= -lswresample
+    CONFIG(static_ffmpeg): LIBS *= -llibswresample
+    else: LIBS *= -lswresample
 }
 CONFIG(enable_avresample) {
     DEFINES *= QTAV_HAVE_AVRESAMPLE
     SOURCES *= AudioResamplerLibav.cpp
-    LIBS *= -lavresample
+    CONFIG(static_ffmpeg): LIBS *= -llibavresample
+    else: LIBS *= -lavresample
 }
 #may depends on avfilter
 CONFIG(enable_avdevice) {
     DEFINES *= QTAV_HAVE_AVDEVICE
-    LIBS *= -lavdevice
-    CONFIG(static_ffmpeg): LIBS *= -lgdi32 -lgdiplus -loleaut32 -lshlwapi
+    CONFIG(static_ffmpeg): LIBS *= -llibavdevice -lgdi32 -lgdiplus -loleaut32 -lshlwapi
+    else: LIBS *= -lavdevice
 }
 CONFIG(enable_avfilter) {
     DEFINES *= QTAV_HAVE_AVFILTER
-    LIBS *= -lavfilter
+    CONFIG(static_ffmpeg): LIBS *= -llibavfilter
+    else: LIBS *= -lavfilter
 }
 CONFIG(enable_ipp) {
     DEFINES *= QTAV_HAVE_IPP
@@ -161,8 +164,9 @@ CONFIG(enable_libass) {
         capi/ass_api.cpp \
         subtitle/SubtitleProcessorLibASS.cpp
 }
-LIBS *= -lavcodec -lavformat -lswscale -lavutil -lUser32
-CONFIG(static_ffmpeg): LIBS *= -lws2_32 -lstrmiids -lvfw32 -luuid -lSecur32 -lBcrypt -llegacy_stdio_definitions
+LIBS *= -lUser32
+CONFIG(static_ffmpeg): LIBS *= -llibavcodec -llibavformat -llibswscale -llibavutil -lws2_32 -lstrmiids -lVfw32 -luuid -lSecur32 -lBcrypt -llegacy_stdio_definitions
+else: LIBS *= -lavcodec -lavformat -lswscale -lavutil
 SOURCES += \
     AVCompat.cpp \
     QtAV_Global.cpp \
