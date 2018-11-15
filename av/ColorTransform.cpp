@@ -85,7 +85,7 @@ const QMatrix4x4& ColorTransform::YUV2RGB(ColorSpace cs)
 static QMatrix4x4 ColorRangeYUV(ColorRange from, ColorRange to)
 {
     if (from == to)
-        return QMatrix4x4();
+        return {};
     static const qreal Y2 = 235, Y1 = 16, C2 = 240, C1 = 16;
     static const qreal s = 255; //TODO: can be others
     if (from == ColorRange_Limited) { //TODO: Unknown. But what if realy want unknown?
@@ -104,14 +104,14 @@ static QMatrix4x4 ColorRangeYUV(ColorRange from, ColorRange to)
         return m;
     }
     // ColorRange_Unknown
-    return QMatrix4x4();
+    return {};
 }
 
 // ColorRangeRGB(...)*
 static QMatrix4x4 ColorRangeRGB(ColorRange from, ColorRange to)
 {
     if (from == to)
-        return QMatrix4x4();
+        return {};
     static const qreal R2 = 235, R1 = 16;
     static const qreal s = 255;
     if (to == ColorRange_Limited) {
@@ -127,7 +127,7 @@ static QMatrix4x4 ColorRangeRGB(ColorRange from, ColorRange to)
         m.translate(-s/R1, -s/R1, -s/R1);
         return m;
     }
-    return QMatrix4x4();
+    return {};
 }
 
 class ColorTransform::Private : public QSharedData

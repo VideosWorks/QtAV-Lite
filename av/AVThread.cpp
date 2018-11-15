@@ -168,7 +168,7 @@ qreal AVThread::previousHistoryPts() const
     if (d.pts_history.size() == 1)
         return -d.pts_history.back();
     const qreal current_pts = d.pts_history.back();
-    for (int i = d.pts_history.size() - 2; i > 0; --i) {
+    for (size_t i = d.pts_history.size() - 2; i > 0; --i) {
         if (d.pts_history.at(i) < current_pts)
             return d.pts_history.at(i);
     }

@@ -1,8 +1,8 @@
 TARGET = Qt$${QT_MAJOR_VERSION}AVWidgets
 include(../common.pri)
 TEMPLATE = lib
+QT *= opengl
 qtHaveModule(widgets): QT *= widgets
-#QT *= opengl
 DEFINES *= BUILD_QTAVWIDGETS_LIB
 CONFIG(shared, static|shared) {
     RC_FILE = QtAVWidgets.rc
@@ -10,7 +10,9 @@ CONFIG(shared, static|shared) {
 } else:CONFIG(static, static|shared) {
     DEFINES *= BUILD_QTAVWIDGETS_STATIC
 }
-LIBS *= -lUser32
+include(../av.pri)
+LIBS *= -lUser32 -lgdiplus -lgdi32
+DEFINES *= QTAV_HAVE_GL QTAV_HAVE_GDIPLUS QTAV_HAVE_DIRECT2D
 SDK_HEADERS *= \
     QtAVWidgets/QtAVWidgets \
     QtAVWidgets/QtAVWidgets.h \
@@ -27,19 +29,9 @@ SOURCES *= \
     GraphicsItemRenderer.cpp \
     WidgetRenderer.cpp \
     OpenGLWidgetRenderer.cpp \
-    GLWidgetRenderer2.cpp
-DEFINES *= QTAV_HAVE_GL
-CONFIG(enbale_gdiplus) {
-  DEFINES *= QTAV_HAVE_GDIPLUS
-  SOURCES *= GDIRenderer.cpp
-  LIBS *= -lgdiplus -lgdi32
-}
-CONFIG(enable_direct2d) {
-  DEFINES *= QTAV_HAVE_DIRECT2D
-  !*msvc*: INCLUDEPATH *= $${ROOT}/contrib/d2d1headers
-  SOURCES *= Direct2DRenderer.cpp
-  #LIBS *= -lD2d1
-}
+    GLWidgetRenderer2.cpp \
+    GDIRenderer.cpp \
+    Direct2DRenderer.cpp
 HEADERS *= \
     $$SDK_HEADERS \
     $$SDK_PRIVATE_HEADERS

@@ -1,4 +1,4 @@
-﻿/******************************************************************************
+/******************************************************************************
     QtAV:  Multimedia framework based on Qt and FFmpeg
     Copyright (C) 2012-2017 Wang Bin <wbsecg1@gmail.com>
 
@@ -1397,7 +1397,7 @@ void AVPlayer::seekChapter(int incr)
     av_time_base_q.den = AV_TIME_BASE;
 
     /* find the current chapter */
-    for (i = 0; i < chapters(); ++i) {
+    for (; i < static_cast<int>(chapters()); ++i) {
         AVChapter *ch = ic->chapters[i];
         if (av_compare_ts(pos, av_time_base_q, ch->start, ch->time_base) < 0) {
             --i;
@@ -1406,10 +1406,8 @@ void AVPlayer::seekChapter(int incr)
     }
 
     i += incr;
-    //i = FFMAX(i, 0);
-    if (i <= 0)
-        i = 0;
-    if (i >= chapters())
+    i = FFMAX(i, 0);
+    if (i >= static_cast<int>(chapters()))
         return;
 
     //av_log(NULL, AV_LOG_VERBOSE, "Seeking to chapter %d.\n", i);
@@ -1683,7 +1681,7 @@ int AVPlayer::saturation() const
     return d->saturation;
 }
 
-unsigned int AVPlayer::chapters() const
+quint32 AVPlayer::chapters() const
 {
     return d->demuxer.formatContext()->nb_chapters;
 }

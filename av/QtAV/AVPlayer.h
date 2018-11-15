@@ -1,4 +1,4 @@
-﻿/******************************************************************************
+/******************************************************************************
     QtAV:  Multimedia framework based on Qt and FFmpeg
     Copyright (C) 2012-2017 Wang Bin <wbsecg1@gmail.com>
 
@@ -82,7 +82,7 @@ class Q_AV_EXPORT AVPlayer : public QObject
     Q_PROPERTY(State state READ state WRITE setState NOTIFY stateChanged)
     Q_PROPERTY(QtAV::MediaStatus mediaStatus READ mediaStatus NOTIFY mediaStatusChanged)
     Q_PROPERTY(QtAV::MediaEndAction mediaEndAction READ mediaEndAction WRITE setMediaEndAction NOTIFY mediaEndActionChanged)
-    Q_PROPERTY(unsigned int chapters READ chapters NOTIFY chaptersChanged)
+    Q_PROPERTY(quint32 chapters READ chapters NOTIFY chaptersChanged)
     Q_ENUMS(State)
 public:
     /*!
@@ -375,7 +375,7 @@ public:
     int contrast() const;
     int hue() const; //not implemented
     int saturation() const;
-    unsigned int chapters() const;
+    quint32 chapters() const;
     /*!
      * \sa AVDemuxer::setOptions()
      * example:

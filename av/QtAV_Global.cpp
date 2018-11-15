@@ -457,7 +457,6 @@ InitFFmpegLog fflog;
 // statically
 static void initResources() {
     Q_INIT_RESOURCE(shaders);
-    Q_INIT_RESOURCE(QtAV);
 }
 
 namespace {
