@@ -188,7 +188,7 @@ QString aboutQtAV_PlainText()
 
 QString aboutQtAV_HTML()
 {
-    static QString about = QString::fromLatin1("<img src='qrc:/QtAV.svg'><h3>QtAV " QTAV_VERSION_STR_LONG "</h3>\n"
+    static QString about = QString::fromLatin1("<h3>QtAV " QTAV_VERSION_STR_LONG "</h3>\n"
             "<p>%1</p><p>%2</p><p>%3 </p>"
             "<p>Copyright (C) 2012-2018 Wang Bin (aka. Lucas Wang) <a href='mailto:wbsecg1@gmail.com'>wbsecg1@gmail.com</a></p>\n"
             "<p>%4: <a href='http://qtav.org/donate.html'>http://qtav.org/donate.html</a></p>\n"
@@ -465,6 +465,6 @@ namespace {
     public:
         ResourceLoader() { initResources(); }
     };
-    
+
     ResourceLoader QtAV_QRCLoader;
 }
