@@ -9,7 +9,7 @@ CONFIG(shared, static|shared) {
 } else:CONFIG(static, static|shared) {
     DEFINES *= BUILD_QTAV_STATIC
 }
-!CONFIG(enable_dx): INCLUDEPATH += $${ROOT}/contrib/dxsdk
+!CONFIG(enable_dx): INCLUDEPATH *= $${ROOT}/contrib/dxsdk
 CONFIG(sse4_1)|CONFIG(enable_sse4_1)|contains(TARGET_ARCH_SUB, sse4.1): CONFIG *= sse4_1 enable_simd
 CONFIG(sse2)|CONFIG(enable_sse2)|contains(TARGET_ARCH_SUB, sse2): CONFIG *= sse2 enable_simd
 CONFIG(sse4_1) {
@@ -36,7 +36,7 @@ exists($${ROOT}/contrib/capi/capi.pri) {
 } else {
     warning("\"contrib/capi\" is missing. run \'git submodule update --init\' first.")
 }
-RESOURCES += shaders/shaders.qrc
+RESOURCES *= shaders/shaders.qrc
 CONFIG(enable_capi) {
     DEFINES *= QTAV_HAVE_EGL_CAPI
     HEADERS *= capi/egl_api.h
