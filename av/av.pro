@@ -36,9 +36,7 @@ exists($${ROOT}/contrib/capi/capi.pri) {
 } else {
     warning("\"contrib/capi\" is missing. run \'git submodule update --init\' first.")
 }
-RESOURCES += \
-    images_svg.qrc \
-    shaders/shaders.qrc
+RESOURCES += shaders/shaders.qrc
 CONFIG(enable_capi) {
     DEFINES *= QTAV_HAVE_EGL_CAPI
     HEADERS *= capi/egl_api.h
@@ -150,9 +148,6 @@ CONFIG(enable_d3dva) {
     SOURCES *= codec/video/VideoDecoderD3D.cpp
 }
 DEFINES *= QTAV_HAVE_QT_EGL QTAV_HAVE_XAUDIO2
-OTHER_FILES *= \
-    shaders/planar.f.glsl \
-    shaders/rgb.f.glsl
 CONFIG(enable_libass) {
     !CONFIG(enable_capi)|CONFIG(enable_libass_link) {
         LIBS *= -llibass
