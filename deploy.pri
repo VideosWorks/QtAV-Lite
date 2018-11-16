@@ -1,4 +1,6 @@
 CONFIG(shared, static|shared) {
+    target.path = $$[QT_INSTALL_BINS]
+    INSTALLS *= target
     qtlibs.path = $${BIN_DIR}
     isEmpty(windeployqt): windeployqt = $$[QT_INSTALL_BINS]/windeployqt.exe
     exists("$${windeployqt}") {
