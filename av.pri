@@ -7,5 +7,10 @@ CONFIG(debug, debug|release) {
 }
 #LIBS *= -L$$OUT_PWD/../$${qtav_lib_name}/$${qtav_lib_dir} -l$${qtav_lib_file}
 LIBS *= -L$${DESTDIR} -l$${qtav_lib_file}
-INCLUDEPATH *= $$PWD/av
-DEPENDPATH *= $$PWD/av
+contains(DEFINES, BUILD_QTAVWIDGETS_LIB) {
+    INCLUDEPATH *= $$PWD/av
+    DEPENDPATH *= $$PWD/av
+} else {
+    INCLUDEPATH *= $$PWD/av/QtAV
+    DEPENDPATH *= $$PWD/av/QtAV
+}
