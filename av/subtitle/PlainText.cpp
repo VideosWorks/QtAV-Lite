@@ -131,7 +131,7 @@ QString fromAss(const char* ass) {
         }
     }
     ret++;
-    int p = strcspn(b.start, "\r\n");
+    size_t p = strcspn(b.start, "\r\n");
     if (p == b.len) //not found
         return QString::fromUtf8(ret);
     QString line2 = QString::fromUtf8(b.start + p + 1).trimmed();

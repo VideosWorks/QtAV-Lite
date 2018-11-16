@@ -83,6 +83,7 @@ void OpenGLWidgetRenderer::resizeEvent(QResizeEvent *e)
 
 void OpenGLWidgetRenderer::showEvent(QShowEvent *e)
 {
+    Q_UNUSED(e)
     onShowEvent(); // TODO: onShowEvent(w, h)?
     resizeGL(width(), height());
 }

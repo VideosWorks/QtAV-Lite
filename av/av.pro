@@ -1,5 +1,11 @@
 TARGET = Qt$${QT_MAJOR_VERSION}AV
 include(../common.pri)
+isEmpty(ffmpeg_dir): ffmpeg_dir = $${ROOT}/ffmpeg
+!exists($${ffmpeg_dir}): error("Can\'t find FFmpeg dir.")
+contains(QT_ARCH, x86_64): LIBS *= -L$${ffmpeg_dir}/lib/x64
+else: LIBS *= -L$${ffmpeg_dir}/lib/x86
+INCLUDEPATH *= $${ffmpeg_dir}/include
+DEPENDPATH *= $${ffmpeg_dir}/include
 TEMPLATE = lib
 QT *= opengl
 DEFINES *= BUILD_QTAV_LIB
