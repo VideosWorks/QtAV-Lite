@@ -1,8 +1,7 @@
 TARGET = Qt$${QT_MAJOR_VERSION}AVWidgets
 include(../common.pri)
 TEMPLATE = lib
-QT *= opengl
-qtHaveModule(widgets): QT *= widgets
+QT *= widgets opengl
 DEFINES *= BUILD_QTAVWIDGETS_LIB
 CONFIG(shared, static|shared) {
     RC_FILE = QtAVWidgets.rc

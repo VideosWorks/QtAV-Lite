@@ -59,16 +59,16 @@ CONFIG(enable_avresample) {
     CONFIG(static_ffmpeg): LIBS *= -llibavresample
     else: LIBS *= -lavresample
 }
-#may depends on avfilter
-CONFIG(enable_avdevice) {
-    DEFINES *= QTAV_HAVE_AVDEVICE
-    CONFIG(static_ffmpeg): LIBS *= -llibavdevice -lgdi32 -lgdiplus -loleaut32 -lshlwapi
-    else: LIBS *= -lavdevice
-}
 CONFIG(enable_avfilter) {
     DEFINES *= QTAV_HAVE_AVFILTER
     CONFIG(static_ffmpeg): LIBS *= -llibavfilter
     else: LIBS *= -lavfilter
+}
+#may depends on avfilter
+CONFIG(enable_avdevice) {
+    DEFINES *= QTAV_HAVE_AVDEVICE
+    CONFIG(static_ffmpeg): LIBS *= -llibavdevice -lgdi32 -loleaut32 -lshlwapi
+    else: LIBS *= -lavdevice
 }
 CONFIG(enable_ipp) {
     DEFINES *= QTAV_HAVE_IPP
@@ -152,8 +152,8 @@ CONFIG(enable_d3dva) {
 }
 DEFINES *= QTAV_HAVE_QT_EGL QTAV_HAVE_XAUDIO2
 CONFIG(enable_libass) {
-    !CONFIG(enable_capi)|CONFIG(enable_libass_link) {
-        LIBS *= -llibass
+    !CONFIG(capi)|CONFIG(enable_libass_link) {
+        LIBS *= -lass # libass for static
         DEFINES *= CAPI_LINK_ASS
     }
     DEFINES *= QTAV_HAVE_LIBASS
