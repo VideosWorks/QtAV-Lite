@@ -15,10 +15,11 @@ CONFIG(shared, static|shared) {
 } else:CONFIG(static, static|shared) {
     DEFINES *= BUILD_QTAV_STATIC
 }
-CONFIG(sse4_1)|CONFIG(enable_sse4_1)|contains(TARGET_ARCH_SUB, sse4.1): CONFIG *= sse4_1 enable_simd
-CONFIG(sse2)|CONFIG(enable_sse2)|contains(TARGET_ARCH_SUB, sse2): CONFIG *= sse2 enable_simd
-exists($${ROOT}/contrib/capi/capi.pri) {
-    include($${ROOT}/contrib/capi/capi.pri)
+CONFIG(sse4_1)|!CONFIG(no_sse4_1): CONFIG *= sse4_1 enable_simd
+CONFIG(sse2)|!CONFIG(no_sse2): CONFIG *= sse2 enable_simd
+PROJ_ROOT = $$PWD/..
+exists($${PROJ_ROOT}/contrib/capi/capi.pri) {
+    include($${PROJ_ROOT}/contrib/capi/capi.pri)
     DEFINES *= QTAV_HAVE_CAPI
 } else {
     warning("\"contrib/capi\" is missing. run \'git submodule update --init\' first.")
@@ -31,47 +32,48 @@ CONFIG(capi) {
     CONFIG(debug, debug|release): LIBS *= -llibEGLd -llibGLESv2d
     else:CONFIG(release, debug|release): LIBS *= -llibEGL -llibGLESv2
 }
-!CONFIG(enable_dx): INCLUDEPATH *= $${ROOT}/contrib/dxsdk
+CONFIG(no_dx): INCLUDEPATH *= $${PROJ_ROOT}/contrib/dxsdk
 CONFIG(sse4_1) {
     CONFIG *= sse2
     DEFINES *= QTAV_HAVE_SSE4_1
     !CONFIG(enable_simd): CONFIG *= simd
-    SSE4_1_SOURCES *= utils/CopyFrame_SSE4.cpp
+    SOURCES *= utils/CopyFrame_SSE4.cpp
 }
 CONFIG(sse2) {
-  DEFINES *= QTAV_HAVE_SSE2
-  !CONFIG(enable_simd): CONFIG *= simd
-  SSE2_SOURCES *= utils/CopyFrame_SSE2.cpp
+    DEFINES *= QTAV_HAVE_SSE2
+    !CONFIG(enable_simd): CONFIG *= simd
+    SOURCES *= utils/CopyFrame_SSE2.cpp
 }
 CONFIG(enable_uchardet) {
     DEFINES *= LINK_UCHARDET
     LIBS *= -luchardet
-} else:exists($${ROOT}/contrib/uchardet/src/uchardet.h) {
-    include($${ROOT}/contrib/uchardet.pri)
+} else:exists($${PROJ_ROOT}/contrib/uchardet/src/uchardet.h) {
+    include($${PROJ_ROOT}/contrib/uchardet.pri)
     DEFINES *= BUILD_UCHARDET
 }
 RESOURCES *= shaders/shaders.qrc
 #UINT64_C: C99 math features, need -D__STDC_CONSTANT_MACROS in CXXFLAGS
 DEFINES *= __STDC_CONSTANT_MACROS
-CONFIG(enable_swresample) {
+!CONFIG(no_swresample) {
     DEFINES *= QTAV_HAVE_SWRESAMPLE
     SOURCES *= AudioResamplerFF.cpp
     CONFIG(static_ffmpeg): LIBS *= -llibswresample
     else: LIBS *= -lswresample
 }
 CONFIG(enable_avresample) {
+    warning("You have enabled libavresample, however it\'s deprecated.")
     DEFINES *= QTAV_HAVE_AVRESAMPLE
     SOURCES *= AudioResamplerLibav.cpp
     CONFIG(static_ffmpeg): LIBS *= -llibavresample
     else: LIBS *= -lavresample
 }
-CONFIG(enable_avfilter) {
+!CONFIG(no_avfilter) {
     DEFINES *= QTAV_HAVE_AVFILTER
     CONFIG(static_ffmpeg): LIBS *= -llibavfilter
     else: LIBS *= -lavfilter
 }
 #may depends on avfilter
-CONFIG(enable_avdevice) {
+!CONFIG(no_avdevice) {
     DEFINES *= QTAV_HAVE_AVDEVICE
     CONFIG(static_ffmpeg): LIBS *= -llibavdevice -lgdi32 -loleaut32 -lshlwapi
     else: LIBS *= -lavdevice
@@ -98,11 +100,11 @@ CONFIG(enable_ipp) {
         -limf
     #omp for static link. _t is multi-thread static link
 }
-CONFIG(enable_dsound) {
+!CONFIG(no_dsound) {
     SOURCES *= output/audio/AudioOutputDSound.cpp
     DEFINES *= QTAV_HAVE_DSOUND
 }
-CONFIG(enable_cuda) {
+!CONFIG(no_cuda) {
     DEFINES *= QTAV_HAVE_CUDA
     HEADERS *= \
         cuda/dllapi/nv_inc.h \
@@ -133,7 +135,7 @@ CONFIG(enable_cuda) {
         LIBS *= -lnvcuvid -lcuda
     }
 }
-CONFIG(enable_d3d11va) {
+!CONFIG(no_d3d11va) {
     CONFIG *= enable_d3dva c++11
     DEFINES *= QTAV_HAVE_D3D11VA
     SOURCES *= \
@@ -146,7 +148,7 @@ CONFIG(enable_d3d11va) {
         directx/SurfaceInteropD3D11.h \
         directx/D3D11VP.h
 }
-CONFIG(enable_dxva) {
+!CONFIG(no_dxva) {
     CONFIG *= enable_d3dva
     DEFINES *= QTAV_HAVE_DXVA
     SOURCES *= codec/video/VideoDecoderDXVA.cpp

@@ -170,7 +170,7 @@ Q_DECLARE_METATYPE(QtAV::MediaEndAction)
 #endif
 
 // TODO: internal use. move to a private header
-#define QTAV_HAVE(FEATURE) (QTAV_HAVE_##FEATURE+0)
+#define QTAV_HAVE(FEATURE) (QTAV_HAVE_##FEATURE)
 
 #ifndef Q_DECL_OVERRIDE
 #define Q_DECL_OVERRIDE
