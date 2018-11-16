@@ -161,7 +161,8 @@ CONFIG(enable_d3dva) {
 DEFINES *= QTAV_HAVE_QT_EGL QTAV_HAVE_XAUDIO2
 CONFIG(enable_libass) {
     !CONFIG(capi)|CONFIG(enable_libass_link) {
-        LIBS *= -lass # libass for static
+        CONFIG(shared, static|shared): LIBS *= -lass
+        else:CONFIG(static, static|shared): LIBS *= -llibass
         DEFINES *= CAPI_LINK_ASS
     }
     DEFINES *= QTAV_HAVE_LIBASS

@@ -35,7 +35,7 @@
 //#define ASS_CAPI_NS // do not unload() manually!
 //#define CAPI_LINK_ASS
 #include "capi/ass_api.h"
-#include <stdarg.h>
+#include <cstdarg>
 //#include <string>  //include after ass_api.h, stdio.h is included there in a different namespace
 
 namespace QtAV {
