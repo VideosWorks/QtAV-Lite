@@ -7,6 +7,7 @@ CONFIG(debug, debug|release) {
 }
 #LIBS *= -L$$OUT_PWD/../$${qtavwidgets_lib_name}/$${qtavwidgets_lib_dir} -l$${qtavwidgets_lib_file}
 LIBS *= -L$${DESTDIR} -l$${qtavwidgets_lib_file}
+CONFIG(static_ffmpeg): DEFINES *= BUILD_QTAVWIDGETS_STATIC
 INCLUDEPATH *= \
     $$PWD/avwidgets \
     $$PWD/avwidgets/QtAVWidgets
