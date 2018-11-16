@@ -369,3 +369,4 @@ HEADERS *= \
     utils/DirectXHelper.h \
     directx/SurfaceInteropD3D9.h \
     output/audio/xaudio2_compat.h
+include(../deploy.pri)

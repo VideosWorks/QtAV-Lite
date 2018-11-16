@@ -34,3 +34,4 @@ SOURCES *= \
 HEADERS *= \
     $$SDK_HEADERS \
     $$SDK_PRIVATE_HEADERS
+include(../deploy.pri)
