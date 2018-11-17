@@ -6,7 +6,7 @@ CONFIG(debug, debug|release) {
     qtavwidgets_lib_dir = debug
 }
 #LIBS *= -L$$OUT_PWD/../$${qtavwidgets_lib_name}/$${qtavwidgets_lib_dir} -l$${qtavwidgets_lib_file}
-LIBS *= -L$${DESTDIR} -l$${qtavwidgets_lib_file}
+LIBS *= -L$${LIB_DIR} -l$${qtavwidgets_lib_file}
 CONFIG(static, static|shared): DEFINES *= BUILD_QTAVWIDGETS_STATIC
 INCLUDEPATH *= \
     $$PWD/avwidgets \
