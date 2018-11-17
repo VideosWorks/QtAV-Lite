@@ -1,6 +1,0 @@
-[submodule "contrib/capi"]
-	path = contrib/capi
-	url = https://github.com/wang-bin/capi.git
-[submodule "contrib/uchardet"]
-	path = contrib/uchardet
-	url = https://gitlab.freedesktop.org/uchardet/uchardet.git

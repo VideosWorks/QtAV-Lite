@@ -18,11 +18,11 @@ DEPENDPATH *= $${ffmpeg_dir}/include
 CONFIG(sse4_1)|!CONFIG(no_sse4_1): CONFIG *= sse4_1 enable_simd
 CONFIG(sse2)|!CONFIG(no_sse2): CONFIG *= sse2 enable_simd
 PROJ_ROOT = $$PWD/..
-exists($${PROJ_ROOT}/contrib/capi/capi.pri) {
-    include($${PROJ_ROOT}/contrib/capi/capi.pri)
+exists($${PROJ_ROOT}/3rdparty/capi/capi.pri) {
+    include($${PROJ_ROOT}/3rdparty/capi/capi.pri)
     DEFINES *= QTAV_HAVE_CAPI
 } else {
-    warning("\"contrib/capi\" is missing. run \'git submodule update --init\' first.")
+    warning("\"3rdparty/capi\" is missing. run \'git submodule update --init\' first.")
 }
 CONFIG(capi) {
     DEFINES *= QTAV_HAVE_EGL_CAPI
@@ -32,7 +32,7 @@ CONFIG(capi) {
     CONFIG(debug, debug|release): LIBS *= -llibEGLd -llibGLESv2d
     else:CONFIG(release, debug|release): LIBS *= -llibEGL -llibGLESv2
 }
-CONFIG(no_dx): INCLUDEPATH *= $${PROJ_ROOT}/contrib/dxsdk
+CONFIG(no_dx): INCLUDEPATH *= $${PROJ_ROOT}/3rdparty/dxsdk
 CONFIG(sse4_1) {
     CONFIG *= sse2
     DEFINES *= QTAV_HAVE_SSE4_1
@@ -47,8 +47,8 @@ CONFIG(sse2) {
 CONFIG(enable_uchardet) {
     DEFINES *= LINK_UCHARDET
     LIBS *= -luchardet
-} else:exists($${PROJ_ROOT}/contrib/uchardet/src/uchardet.h) {
-    include($${PROJ_ROOT}/contrib/uchardet.pri)
+} else:exists($${PROJ_ROOT}/3rdparty/uchardet/src/uchardet.h) {
+    include($${PROJ_ROOT}/3rdparty/uchardet.pri)
     DEFINES *= BUILD_UCHARDET
 }
 RESOURCES *= shaders/shaders.qrc
