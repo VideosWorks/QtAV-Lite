@@ -1,0 +1,6 @@
+[submodule "3rdparty/capi"]
+	path = 3rdparty/capi
+	url = https://github.com/wang-bin/capi.git
+[submodule "3rdparty/uchardet"]
+	path = 3rdparty/uchardet
+	url = https://gitlab.freedesktop.org/uchardet/uchardet.git
