@@ -46,15 +46,30 @@ SOURCES *= \
     $$PWD/uchardet/src/uchardet.cpp \
     $$PWD/uchardet/src/LangModels/LangArabicModel.cpp \
     $$PWD/uchardet/src/LangModels/LangBulgarianModel.cpp \
+    $$PWD/uchardet/src/LangModels/LangCroatianModel.cpp \
+    $$PWD/uchardet/src/LangModels/LangCzechModel.cpp \
     $$PWD/uchardet/src/LangModels/LangDanishModel.cpp \
     $$PWD/uchardet/src/LangModels/LangEsperantoModel.cpp \
+    $$PWD/uchardet/src/LangModels/LangEstonianModel.cpp \
+    $$PWD/uchardet/src/LangModels/LangFinnishModel.cpp \
     $$PWD/uchardet/src/LangModels/LangFrenchModel.cpp \
     $$PWD/uchardet/src/LangModels/LangGermanModel.cpp \
     $$PWD/uchardet/src/LangModels/LangGreekModel.cpp \
     $$PWD/uchardet/src/LangModels/LangHebrewModel.cpp \
     $$PWD/uchardet/src/LangModels/LangHungarianModel.cpp \
+    $$PWD/uchardet/src/LangModels/LangIrishModel.cpp \
+    $$PWD/uchardet/src/LangModels/LangItalianModel.cpp \
+    $$PWD/uchardet/src/LangModels/LangLatvianModel.cpp \
+    $$PWD/uchardet/src/LangModels/LangLithuanianModel.cpp \
+    $$PWD/uchardet/src/LangModels/LangMalteseModel.cpp \
+    $$PWD/uchardet/src/LangModels/LangPolishModel.cpp \
+    $$PWD/uchardet/src/LangModels/LangPortugueseModel.cpp \
+    $$PWD/uchardet/src/LangModels/LangRomanianModel.cpp \
     $$PWD/uchardet/src/LangModels/LangRussianModel.cpp \
+    $$PWD/uchardet/src/LangModels/LangSlovakModel.cpp \
+    $$PWD/uchardet/src/LangModels/LangSloveneModel.cpp \
     $$PWD/uchardet/src/LangModels/LangSpanishModel.cpp \
+    $$PWD/uchardet/src/LangModels/LangSwedishModel.cpp \
     $$PWD/uchardet/src/LangModels/LangThaiModel.cpp \
     $$PWD/uchardet/src/LangModels/LangTurkishModel.cpp \
     $$PWD/uchardet/src/LangModels/LangVietnameseModel.cpp

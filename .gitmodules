@@ -3,4 +3,4 @@
 	url = https://github.com/wang-bin/capi.git
 [submodule "contrib/uchardet"]
 	path = contrib/uchardet
-	url = https://github.com/BYVoid/uchardet.git
+	url = https://gitlab.freedesktop.org/uchardet/uchardet.git
