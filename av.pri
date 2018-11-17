@@ -7,7 +7,7 @@ CONFIG(debug, debug|release) {
 }
 #LIBS *= -L$$OUT_PWD/../$${qtav_lib_name}/$${qtav_lib_dir} -l$${qtav_lib_file}
 LIBS *= -L$${DESTDIR} -l$${qtav_lib_file}
-CONFIG(static_ffmpeg): DEFINES *= BUILD_QTAV_STATIC
+CONFIG(static, static|shared): DEFINES *= BUILD_QTAV_STATIC
 INCLUDEPATH *= \
     $$PWD/av \
     $$PWD/av/QtAV
