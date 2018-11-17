@@ -1,5 +1,4 @@
 TARGET = Qt$${QT_MAJOR_VERSION}AV
-include(../common.pri)
 isEmpty(ffmpeg_dir): ffmpeg_dir = $${ROOT}/ffmpeg
 !exists($${ffmpeg_dir}): error("Can\'t find FFmpeg dir.")
 contains(QT_ARCH, x86_64): LIBS *= -L$${ffmpeg_dir}/lib/x64
@@ -15,6 +14,7 @@ CONFIG(shared, static|shared) {
 } else:CONFIG(static, static|shared) {
     DEFINES *= BUILD_QTAV_STATIC
 }
+include(../common.pri)
 CONFIG(sse4_1)|!CONFIG(no_sse4_1): CONFIG *= sse4_1 enable_simd
 CONFIG(sse2)|!CONFIG(no_sse2): CONFIG *= sse2 enable_simd
 PROJ_ROOT = $$PWD/..
