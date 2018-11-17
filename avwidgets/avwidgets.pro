@@ -1,7 +1,5 @@
 TARGET = Qt$${QT_MAJOR_VERSION}AVWidgets
 TEMPLATE = lib
-QT *= widgets opengl
-DEFINES *= BUILD_QTAVWIDGETS_LIB
 CONFIG(shared, static|shared) {
     RC_FILE = QtAVWidgets.rc
     CONFIG *= dll
@@ -9,9 +7,14 @@ CONFIG(shared, static|shared) {
     DEFINES *= BUILD_QTAVWIDGETS_STATIC
 }
 include(../common.pri)
+QT *= widgets opengl
+DEFINES *= \
+    BUILD_QTAVWIDGETS_LIB \
+    QTAV_HAVE_GL \
+    QTAV_HAVE_GDIPLUS \
+    QTAV_HAVE_DIRECT2D
 include(../av.pri)
 LIBS *= -lUser32 -lgdiplus -lgdi32
-DEFINES *= QTAV_HAVE_GL QTAV_HAVE_GDIPLUS QTAV_HAVE_DIRECT2D
 SDK_HEADERS *= \
     QtAVWidgets/QtAVWidgets \
     QtAVWidgets/QtAVWidgets.h \

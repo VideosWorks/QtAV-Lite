@@ -1,13 +1,5 @@
 TARGET = Qt$${QT_MAJOR_VERSION}AV
-isEmpty(ffmpeg_dir): ffmpeg_dir = $${ROOT}/ffmpeg
-!exists($${ffmpeg_dir}): error("Can\'t find FFmpeg dir.")
-contains(QT_ARCH, x86_64): LIBS *= -L$${ffmpeg_dir}/lib/x64
-else: LIBS *= -L$${ffmpeg_dir}/lib/x86
-INCLUDEPATH *= $${ffmpeg_dir}/include
-DEPENDPATH *= $${ffmpeg_dir}/include
 TEMPLATE = lib
-QT *= opengl
-DEFINES *= BUILD_QTAV_LIB
 CONFIG(shared, static|shared) {
     RC_FILE = QtAV.rc
     CONFIG *= dll
@@ -15,6 +7,14 @@ CONFIG(shared, static|shared) {
     DEFINES *= BUILD_QTAV_STATIC
 }
 include(../common.pri)
+QT *= opengl
+DEFINES *= BUILD_QTAV_LIB
+isEmpty(ffmpeg_dir): ffmpeg_dir = $${ROOT}/ffmpeg
+!exists($${ffmpeg_dir}): error("Can\'t find FFmpeg dir.")
+contains(QT_ARCH, x86_64): LIBS *= -L$${ffmpeg_dir}/lib/x64
+else: LIBS *= -L$${ffmpeg_dir}/lib/x86
+INCLUDEPATH *= $${ffmpeg_dir}/include
+DEPENDPATH *= $${ffmpeg_dir}/include
 CONFIG(sse4_1)|!CONFIG(no_sse4_1): CONFIG *= sse4_1 enable_simd
 CONFIG(sse2)|!CONFIG(no_sse2): CONFIG *= sse2 enable_simd
 PROJ_ROOT = $$PWD/..
