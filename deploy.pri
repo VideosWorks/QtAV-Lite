@@ -3,7 +3,7 @@ CONFIG(shared, static|shared) {
     INSTALLS *= target
     $${TARGET}_libs.path = $${BIN_DIR}
     isEmpty(windeployqt): windeployqt = $$[QT_INSTALL_BINS]/windeployqt
-    exists("$${windeployqt}") {
+    exists("$${windeployqt}.exe") {
         target_file_name = $${TARGET}
         CONFIG(dll) {
             exists($${BIN_DIR}/$${target_file_name}$${QTAV_MAJOR_VERSION}.dll): target_file_name = $${target_file_name}$${QTAV_MAJOR_VERSION}.dll
