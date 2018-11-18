@@ -11,8 +11,12 @@ QT *= opengl
 DEFINES *= BUILD_QTAV_LIB
 isEmpty(ffmpeg_dir): ffmpeg_dir = $${ROOT}/ffmpeg
 !exists($${ffmpeg_dir}): error("Can\'t find FFmpeg dir.")
-contains(QT_ARCH, x86_64): LIBS *= -L$${ffmpeg_dir}/lib/x64
-else: LIBS *= -L$${ffmpeg_dir}/lib/x86
+isEmpty(ffmpeg_lib_dir): ffmpeg_lib_dir = $${ffmpeg_dir}/lib
+!exists($${ffmpeg_lib_dir}/*avcodec.lib) {
+    contains(QT_ARCH, x86_64): ffmpeg_lib_dir = $${ffmpeg_lib_dir}/x64
+    else: ffmpeg_lib_dir = $${ffmpeg_lib_dir}/x86
+}
+LIBS *= -L$${ffmpeg_lib_dir}
 INCLUDEPATH *= $${ffmpeg_dir}/include
 DEPENDPATH *= $${ffmpeg_dir}/include
 CONFIG(sse4_1)|!CONFIG(no_sse4_1): CONFIG *= sse4_1 enable_simd
