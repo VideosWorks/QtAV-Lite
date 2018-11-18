@@ -1,5 +1,5 @@
 CONFIG(shared, static|shared) {
-    target.path = $$[QT_INSTALL_BINS]
+    isEmpty(target.path): target.path = $$[QT_INSTALL_BINS]
     INSTALLS *= target
     $${TARGET}_libs.path = $${BIN_DIR}
     isEmpty(windeployqt): windeployqt = $$[QT_INSTALL_BINS]/windeployqt

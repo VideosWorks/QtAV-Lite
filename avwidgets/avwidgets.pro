@@ -1,7 +1,7 @@
 TARGET = Qt$${QT_MAJOR_VERSION}AVWidgets
 TEMPLATE = lib
 CONFIG(shared, static|shared) {
-    RC_FILE = QtAVWidgets.rc
+    RC_FILE = AVWidgets.rc
     CONFIG *= dll
 } else:CONFIG(static, static|shared) {
     DEFINES *= BUILD_QTAVWIDGETS_STATIC
@@ -15,6 +15,8 @@ DEFINES *= \
     QTAV_HAVE_DIRECT2D
 include(../av.pri)
 LIBS *= -lUser32 -lgdiplus -lgdi32
+INCLUDEPATH *= QtAVWidgets
+DEPENDPATH *= QtAVWidgets
 SDK_HEADERS *= \
     QtAVWidgets/QtAVWidgets \
     QtAVWidgets/QtAVWidgets.h \
@@ -34,7 +36,5 @@ SOURCES *= \
     GLWidgetRenderer2.cpp \
     GDIRenderer.cpp \
     Direct2DRenderer.cpp
-HEADERS *= \
-    $$SDK_HEADERS \
-    $$SDK_PRIVATE_HEADERS
+HEADERS *= $$SDK_HEADERS
 include(../deploy.pri)

@@ -1,7 +1,7 @@
 TARGET = Qt$${QT_MAJOR_VERSION}AV
 TEMPLATE = lib
 CONFIG(shared, static|shared) {
-    RC_FILE = QtAV.rc
+    RC_FILE = AV.rc
     CONFIG *= dll
 } else:CONFIG(static, static|shared) {
     DEFINES *= BUILD_QTAV_STATIC
@@ -178,6 +178,8 @@ CONFIG(enable_libass) {
 LIBS *= -lUser32
 CONFIG(static_ffmpeg): LIBS *= -llibavcodec -llibavformat -llibswscale -llibavutil -lws2_32 -lstrmiids -lVfw32 -luuid -lSecur32 -lBcrypt -llegacy_stdio_definitions
 else: LIBS *= -lavcodec -lavformat -lswscale -lavutil
+INCLUDEPATH *= QtAV
+DEPENDPATH *= QtAV
 SOURCES += \
     AVCompat.cpp \
     QtAV_Global.cpp \
