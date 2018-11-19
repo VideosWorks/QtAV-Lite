@@ -19,8 +19,8 @@ isEmpty(ffmpeg_lib_dir): ffmpeg_lib_dir = $${ffmpeg_dir}/lib
 LIBS *= -L$${ffmpeg_lib_dir}
 INCLUDEPATH *= $${ffmpeg_dir}/include
 DEPENDPATH *= $${ffmpeg_dir}/include
-CONFIG(sse4_1)|!CONFIG(no_sse4_1): CONFIG *= sse4_1 enable_simd
-CONFIG(sse2)|!CONFIG(no_sse2): CONFIG *= sse2 enable_simd
+CONFIG(sse4_1)|!CONFIG(no_sse4_1): CONFIG *= sse4_1 simd
+CONFIG(sse2)|!CONFIG(no_sse2): CONFIG *= sse2 simd
 PROJ_ROOT = $$PWD/..
 exists($${PROJ_ROOT}/3rdparty/capi/capi.pri) {
     include($${PROJ_ROOT}/3rdparty/capi/capi.pri)
@@ -40,12 +40,12 @@ CONFIG(no_dx): INCLUDEPATH *= $${PROJ_ROOT}/3rdparty/dxsdk
 CONFIG(sse4_1) {
     CONFIG *= sse2
     DEFINES *= QTAV_HAVE_SSE4_1
-    !CONFIG(enable_simd): CONFIG *= simd
+    !CONFIG(simd): CONFIG *= simd
     SOURCES *= utils/CopyFrame_SSE4.cpp
 }
 CONFIG(sse2) {
     DEFINES *= QTAV_HAVE_SSE2
-    !CONFIG(enable_simd): CONFIG *= simd
+    !CONFIG(simd): CONFIG *= simd
     SOURCES *= utils/CopyFrame_SSE2.cpp
 }
 CONFIG(enable_uchardet) {
