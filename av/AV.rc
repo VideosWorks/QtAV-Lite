@@ -21,9 +21,9 @@ BEGIN
             VALUE "CompanyName", "Wang Bin"
             VALUE "FileDescription", "C++ Application Development Framework"
             VALUE "FileVersion", QTAV_VERSION_STR ".0"
-            VALUE "LegalCopyright", "Copyright (C) 2012-2018 Wang Bin"
-            VALUE "InternalName", "QtAV"
-            VALUE "OriginalFilename", "Qt5AV.dll"
+            VALUE "LegalCopyright", "Copyright (C) 2012-2018 by Wang Bin. All rights reserved."
+            VALUE "InternalName", QTAV_PRODUCT_NAME
+            VALUE "OriginalFilename", QTAV_PRODUCT_NAME ".dll"
             VALUE "ProductName", "Qt5"
             VALUE "ProductVersion", QTAV_VERSION_STR ".0"
         END

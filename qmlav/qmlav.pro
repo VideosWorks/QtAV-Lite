@@ -1,7 +1,6 @@
 TARGET = Qt$${QT_MAJOR_VERSION}QmlAV
 TEMPLATE = lib
 CONFIG(shared, static|shared) {
-    RC_FILE = QmlAV.rc
     CONFIG *= dll
 } else:CONFIG(static, static|shared) {
     DEFINES *= BUILD_QMLAV_STATIC
@@ -14,6 +13,7 @@ QT *= \
     qml
 DEFINES *= BUILD_QMLAV_LIB
 include(../av.pri)
+CONFIG(shared, static|shared): RC_FILE = ../av/AV.rc
 INCLUDEPATH *= QmlAV
 DEPENDPATH *= QmlAV
 SOURCES *= \
@@ -28,7 +28,6 @@ SOURCES *= \
     QuickVideoPreview.cpp \
     QuickFBORenderer.cpp
 HEADERS *= \
-    QmlAV/version.h \
     QmlAV/QuickSubtitle.h \
     QmlAV/QuickSubtitleItem.h \
     QmlAV/QuickVideoPreview.h \

@@ -135,17 +135,17 @@ void print_library_info()
             qDebug("FFmpeg/Libav configuration: %s", info->config);
         qDebug("Build with %s-%u.%u.%u"
                , info->lib
-               , QTAV_VERSION_MAJOR(info->build_version)
-               , QTAV_VERSION_MINOR(info->build_version)
-               , QTAV_VERSION_PATCH(info->build_version)
+               , QTAV_MAJOR_VERSION(info->build_version)
+               , QTAV_MINOR_VERSION(info->build_version)
+               , QTAV_PATCH_VERSION(info->build_version)
                );
         unsigned rt_version = info->rt_version;
         if (info->build_version != rt_version) {
             qWarning("Warning: %s runtime version %u.%u.%u mismatch!"
                     , info->lib
-                    , QTAV_VERSION_MAJOR(rt_version)
-                    , QTAV_VERSION_MINOR(rt_version)
-                    , QTAV_VERSION_PATCH(rt_version)
+                    , QTAV_MAJOR_VERSION(rt_version)
+                    , QTAV_MINOR_VERSION(rt_version)
+                    , QTAV_PATCH_VERSION(rt_version)
                     );
         }
         info = Internal::get_depend_component(info);
@@ -162,17 +162,17 @@ QString aboutFFmpeg_HTML()
         text += QStringLiteral("<h4>%1: %2-%3.%4.%5</h4>\n")
                 .arg(QObject::tr("Build version"))
                 .arg(QLatin1String(info->lib))
-                .arg(QTAV_VERSION_MAJOR(info->build_version))
-                .arg(QTAV_VERSION_MINOR(info->build_version))
-                .arg(QTAV_VERSION_PATCH(info->build_version))
+                .arg(QTAV_MAJOR_VERSION(info->build_version))
+                .arg(QTAV_MINOR_VERSION(info->build_version))
+                .arg(QTAV_PATCH_VERSION(info->build_version))
                 ;
         unsigned rt_version = info->rt_version;
         if (info->build_version != rt_version) {
             text += QStringLiteral("<h4 style='color:#ff0000;'>%1: %2.%3.%4</h4>\n")
                     .arg(QObject::tr("Runtime version"))
-                    .arg(QTAV_VERSION_MAJOR(rt_version))
-                    .arg(QTAV_VERSION_MINOR(rt_version))
-                    .arg(QTAV_VERSION_PATCH(rt_version))
+                    .arg(QTAV_MAJOR_VERSION(rt_version))
+                    .arg(QTAV_MINOR_VERSION(rt_version))
+                    .arg(QTAV_PATCH_VERSION(rt_version))
                     ;
         }
         text += QStringLiteral("<p>%1</p>\n<p>%2</p>\n").arg(QString::fromUtf8(info->config)).arg(QString::fromUtf8(info->license));

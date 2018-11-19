@@ -42,10 +42,10 @@ public:
     AudioDecoderFFmpeg();
     AudioDecoderId id() const Q_DECL_OVERRIDE Q_DECL_FINAL;
     virtual QString description() const Q_DECL_OVERRIDE Q_DECL_FINAL {
-        const int patch = QTAV_VERSION_PATCH(avcodec_version());
+        const int patch = QTAV_PATCH_VERSION(avcodec_version());
         return QStringLiteral("%1 avcodec %2.%3.%4")
                 .arg(patch>=100?QStringLiteral("FFmpeg"):QStringLiteral("Libav"))
-                .arg(QTAV_VERSION_MAJOR(avcodec_version())).arg(QTAV_VERSION_MINOR(avcodec_version())).arg(patch);
+                .arg(QTAV_MAJOR_VERSION(avcodec_version())).arg(QTAV_MINOR_VERSION(avcodec_version())).arg(patch);
     }
     bool decode(const Packet& packet) Q_DECL_OVERRIDE Q_DECL_FINAL;
     AudioFrame frame() Q_DECL_OVERRIDE Q_DECL_FINAL;

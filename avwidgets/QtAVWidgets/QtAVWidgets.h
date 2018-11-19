@@ -22,7 +22,7 @@
 #ifndef QTAVWIDGETS_H
 #define QTAVWIDGETS_H
 
-#include <QtAVWidgets/version.h>
+#include <QtAV/version.h>
 #include <QtAVWidgets/global.h>
 #include <QtAVWidgets/GraphicsItemRenderer.h>
 #include <QtAVWidgets/WidgetRenderer.h>

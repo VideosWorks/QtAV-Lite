@@ -44,9 +44,9 @@ public:
 # ifndef QT_NO_DEBUG
             .append("d")
 # endif
-            .append(QString::number(QTAV_VERSION_MAJOR(QtAV_Version()))));
+            .append(QString::number(QTAV_MAJOR_VERSION(QtAV_Version()))));
 #else
-            avwidgets.setFileNameAndVersion(QStringLiteral("QtAVWidgets"), QTAV_VERSION_MAJOR(QtAV_Version()));
+            avwidgets.setFileNameAndVersion(QStringLiteral("QtAVWidgets"), QTAV_MAJOR_VERSION(QtAV_Version()));
 #endif
             qDebug() << "Loading QtAVWidgets module: " << avwidgets.fileName();
             if (!avwidgets.load()) {
