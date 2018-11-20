@@ -1,5 +1,5 @@
-#include "winver.h"
-#include "QtAV/version.h"
+#include <winver.h>
+#include <QtAV/version.h>
 
 VS_VERSION_INFO VERSIONINFO
  FILEVERSION QTAV_MAJOR,QTAV_MINOR,QTAV_PATCH,0
@@ -24,7 +24,7 @@ BEGIN
             VALUE "LegalCopyright", "Copyright (C) 2012-2018 by Wang Bin. All rights reserved."
             VALUE "InternalName", QTAV_PRODUCT_NAME
             VALUE "OriginalFilename", QTAV_PRODUCT_NAME ".dll"
-            VALUE "ProductName", "Qt5"
+            VALUE "ProductName", "Qt" QT_MAJOR_VERSION
             VALUE "ProductVersion", QTAV_VERSION_STR ".0"
         END
     END
