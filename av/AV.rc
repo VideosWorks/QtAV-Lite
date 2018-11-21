@@ -24,7 +24,7 @@ BEGIN
             VALUE "LegalCopyright", "Copyright (C) 2012-2018 by Wang Bin. All rights reserved."
             VALUE "InternalName", QTAV_PRODUCT_NAME
             VALUE "OriginalFilename", QTAV_PRODUCT_NAME ".dll"
-            VALUE "ProductName", "Qt" QT_MAJOR_VERSION
+            VALUE "ProductName", "Qt" QT_MAJOR_VERSION_STR
             VALUE "ProductVersion", QTAV_VERSION_STR ".0"
         END
     END
