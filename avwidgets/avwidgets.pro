@@ -6,9 +6,9 @@ include(../common.pri)
 QT *= widgets opengl
 DEFINES *= \
     BUILD_QTAVWIDGETS_LIB \
-    QTAV_HAVE_GL \
-    QTAV_HAVE_GDIPLUS \
-    QTAV_HAVE_DIRECT2D
+    QTAV_HAVE_GL=1 \
+    QTAV_HAVE_GDIPLUS=1 \
+    QTAV_HAVE_DIRECT2D=1
 include(../av.pri)
 CONFIG(shared, static|shared): RC_FILE = ../av/AV.rc
 LIBS *= -lUser32 -lgdiplus -lgdi32

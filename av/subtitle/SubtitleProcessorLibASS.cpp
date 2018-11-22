@@ -34,14 +34,22 @@
 
 //#define ASS_CAPI_NS // do not unload() manually!
 //#define CAPI_LINK_ASS
+#ifndef LINK_STATIC_LIBASS
 #include "capi/ass_api.h"
+#else
+#include <ass/ass.h>
+#endif
 #include <cstdarg>
-//#include <string>  //include after ass_api.h, stdio.h is included there in a different namespace
+#include <cstring>
 
 namespace QtAV {
 void RenderASS(QImage *image, const SubImage &img, int dstX, int dstY);
 
+#ifndef LINK_STATIC_LIBASS
 class SubtitleProcessorLibASS Q_DECL_FINAL: public SubtitleProcessor, protected ass::api
+#else
+class SubtitleProcessorLibASS Q_DECL_FINAL: public SubtitleProcessor
+#endif
 {
 public:
     SubtitleProcessorLibASS();
@@ -131,8 +139,10 @@ SubtitleProcessorLibASS::SubtitleProcessorLibASS()
     , m_renderer(0)
     , m_track(0)
 {
+#ifndef LINK_STATIC_LIBASS
     if (!ass::api::loaded())
         return;
+#endif
     m_ass = ass_library_init();
     if (!m_ass) {
         qWarning("ass_library_init failed!");
@@ -184,8 +194,10 @@ QList<SubtitleFrame> SubtitleProcessorLibASS::frames() const
 
 bool SubtitleProcessorLibASS::process(QIODevice *dev)
 {
+#ifndef LINK_STATIC_LIBASS
     if (!ass::api::loaded())
         return false;
+#endif
     QMutexLocker lock(&m_mutex);
     Q_UNUSED(lock);
     if (m_track) {
@@ -211,8 +223,10 @@ bool SubtitleProcessorLibASS::process(QIODevice *dev)
 
 bool SubtitleProcessorLibASS::process(const QString &path)
 {
+#ifndef LINK_STATIC_LIBASS
     if (!ass::api::loaded())
         return false;
+#endif
     QMutexLocker lock(&m_mutex);
     Q_UNUSED(lock);
     if (m_track) {
@@ -230,8 +244,10 @@ bool SubtitleProcessorLibASS::process(const QString &path)
 
 bool SubtitleProcessorLibASS::processHeader(const QByteArray& codec, const QByteArray &data)
 {
+#ifndef LINK_STATIC_LIBASS
     if (!ass::api::loaded())
         return false;
+#endif
     QMutexLocker lock(&m_mutex);
     Q_UNUSED(lock);
     m_codec = codec;
@@ -252,8 +268,10 @@ bool SubtitleProcessorLibASS::processHeader(const QByteArray& codec, const QByte
 
 SubtitleFrame SubtitleProcessorLibASS::processLine(const QByteArray &data, qreal pts, qreal duration)
 {
+#ifndef LINK_STATIC_LIBASS
     if (!ass::api::loaded())
         return SubtitleFrame();
+#endif
     if (data.isEmpty() || data.at(0) == 0)
         return SubtitleFrame();
     QMutexLocker lock(&m_mutex);

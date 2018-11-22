@@ -24,12 +24,12 @@ CONFIG(sse2)|!CONFIG(no_sse2): CONFIG *= sse2 simd
 PROJ_ROOT = $$PWD/..
 exists($${PROJ_ROOT}/3rdparty/capi/capi.pri) {
     include($${PROJ_ROOT}/3rdparty/capi/capi.pri)
-    DEFINES *= QTAV_HAVE_CAPI
+    DEFINES *= QTAV_HAVE_CAPI=1
 } else {
     warning("\"3rdparty/capi\" is missing. run \'git submodule update --init\' first.")
 }
 CONFIG(capi) {
-    DEFINES *= QTAV_HAVE_EGL_CAPI
+    DEFINES *= QTAV_HAVE_EGL_CAPI=1
     HEADERS *= capi/egl_api.h
     SOURCES *= capi/egl_api.cpp
 } else {
@@ -39,12 +39,12 @@ CONFIG(capi) {
 CONFIG(no_dx): INCLUDEPATH *= $${PROJ_ROOT}/3rdparty/dxsdk
 CONFIG(sse4_1) {
     CONFIG *= sse2
-    DEFINES *= QTAV_HAVE_SSE4_1
+    DEFINES *= QTAV_HAVE_SSE4_1=1
     !CONFIG(simd): CONFIG *= simd
     SOURCES *= utils/CopyFrame_SSE4.cpp
 }
 CONFIG(sse2) {
-    DEFINES *= QTAV_HAVE_SSE2
+    DEFINES *= QTAV_HAVE_SSE2=1
     !CONFIG(simd): CONFIG *= simd
     SOURCES *= utils/CopyFrame_SSE2.cpp
 }
@@ -59,31 +59,31 @@ RESOURCES *= shaders/shaders.qrc
 #UINT64_C: C99 math features, need -D__STDC_CONSTANT_MACROS in CXXFLAGS
 DEFINES *= __STDC_CONSTANT_MACROS
 !CONFIG(no_swresample) {
-    DEFINES *= QTAV_HAVE_SWRESAMPLE
+    DEFINES *= QTAV_HAVE_SWRESAMPLE=1
     SOURCES *= AudioResamplerFF.cpp
     CONFIG(static_ffmpeg): LIBS *= -llibswresample
     else: LIBS *= -lswresample
 }
 CONFIG(enable_avresample) {
     warning("You have enabled libavresample, however it\'s deprecated.")
-    DEFINES *= QTAV_HAVE_AVRESAMPLE
+    DEFINES *= QTAV_HAVE_AVRESAMPLE=1
     SOURCES *= AudioResamplerLibav.cpp
     CONFIG(static_ffmpeg): LIBS *= -llibavresample
     else: LIBS *= -lavresample
 }
 !CONFIG(no_avfilter) {
-    DEFINES *= QTAV_HAVE_AVFILTER
+    DEFINES *= QTAV_HAVE_AVFILTER=1
     CONFIG(static_ffmpeg): LIBS *= -llibavfilter
     else: LIBS *= -lavfilter
 }
 #may depends on avfilter
 !CONFIG(no_avdevice) {
-    DEFINES *= QTAV_HAVE_AVDEVICE
+    DEFINES *= QTAV_HAVE_AVDEVICE=1
     CONFIG(static_ffmpeg): LIBS *= -llibavdevice -lgdi32 -loleaut32 -lshlwapi
     else: LIBS *= -lavdevice
 }
 CONFIG(enable_ipp) {
-    DEFINES *= QTAV_HAVE_IPP
+    DEFINES *= QTAV_HAVE_IPP=1
     ICCROOT = $${IPPROOT}/../compiler
     INCLUDEPATH *= $${IPPROOT}/include
     SOURCES *= ImageConverterIPP.cpp
@@ -106,10 +106,10 @@ CONFIG(enable_ipp) {
 }
 !CONFIG(no_dsound) {
     SOURCES *= output/audio/AudioOutputDSound.cpp
-    DEFINES *= QTAV_HAVE_DSOUND
+    DEFINES *= QTAV_HAVE_DSOUND=1
 }
 !CONFIG(no_cuda) {
-    DEFINES *= QTAV_HAVE_CUDA
+    DEFINES *= QTAV_HAVE_CUDA=1
     HEADERS *= \
         cuda/dllapi/nv_inc.h \
         cuda/helper_cuda.h \
@@ -123,7 +123,7 @@ CONFIG(enable_ipp) {
         cuda \
         cuda/dllapi
     CONFIG(enable_dllapi):CONFIG(enable_dllapi_cuda) {
-        DEFINES *= QTAV_HAVE_DLLAPI_CUDA
+        DEFINES *= QTAV_HAVE_DLLAPI_CUDA=1
         INCLUDEPATH *= ../depends/dllapi/src
         include(../depends/dllapi/src/libdllapi.pri)
         SOURCES *= \
@@ -141,7 +141,7 @@ CONFIG(enable_ipp) {
 }
 !CONFIG(no_d3d11va) {
     CONFIG *= enable_d3dva c++11
-    DEFINES *= QTAV_HAVE_D3D11VA
+    DEFINES *= QTAV_HAVE_D3D11VA=1
     SOURCES *= \
         codec/video/VideoDecoderD3D11.cpp \
         directx/SurfaceInteropD3D11.cpp \
@@ -154,7 +154,7 @@ CONFIG(enable_ipp) {
 }
 !CONFIG(no_dxva) {
     CONFIG *= enable_d3dva
-    DEFINES *= QTAV_HAVE_DXVA
+    DEFINES *= QTAV_HAVE_DXVA=1
     SOURCES *= codec/video/VideoDecoderDXVA.cpp
     LIBS *= -lole32
 }
@@ -163,10 +163,10 @@ CONFIG(enable_d3dva) {
     SOURCES *= codec/video/VideoDecoderD3D.cpp
 }
 DEFINES *= \
-    QTAV_HAVE_QT_EGL \
-    QTAV_HAVE_XAUDIO2
+    QTAV_HAVE_QT_EGL=1 \
+    QTAV_HAVE_XAUDIO2=1
 CONFIG(enable_libass) {
-    DEFINES *= QTAV_HAVE_LIBASS
+    DEFINES *= QTAV_HAVE_LIBASS=1
     !CONFIG(capi)|CONFIG(enable_libass_link) {
         CONFIG(static_libass): LIBS *= -llibass
         else: LIBS *= -lass
@@ -174,6 +174,7 @@ CONFIG(enable_libass) {
     }
     CONFIG(static_libass) {
         DEFINES *= LINK_STATIC_LIBASS
+        LIBS *= -llibass
     } else {
         HEADERS *= capi/ass_api.h
         SOURCES *= capi/ass_api.cpp
