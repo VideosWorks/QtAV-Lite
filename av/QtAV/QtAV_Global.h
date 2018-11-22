@@ -23,7 +23,7 @@
 #ifndef QTAV_GLOBAL_H
 #define QTAV_GLOBAL_H
 
-#include <stdarg.h>
+#include <cstdarg>
 #include <QtCore/QMetaType>
 #include <QtCore/QByteArray> //QByteArrayLiteral check
 #include <QtCore/qglobal.h>

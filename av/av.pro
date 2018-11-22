@@ -162,18 +162,23 @@ CONFIG(enable_d3dva) {
     HEADERS *= codec/video/VideoDecoderD3D.h
     SOURCES *= codec/video/VideoDecoderD3D.cpp
 }
-DEFINES *= QTAV_HAVE_QT_EGL QTAV_HAVE_XAUDIO2
+DEFINES *= \
+    QTAV_HAVE_QT_EGL \
+    QTAV_HAVE_XAUDIO2
 CONFIG(enable_libass) {
+    DEFINES *= QTAV_HAVE_LIBASS
     !CONFIG(capi)|CONFIG(enable_libass_link) {
         CONFIG(static_libass): LIBS *= -llibass
         else: LIBS *= -lass
         DEFINES *= CAPI_LINK_ASS
     }
-    DEFINES *= QTAV_HAVE_LIBASS
-    HEADERS *= capi/ass_api.h
-    SOURCES *= \
-        capi/ass_api.cpp \
-        subtitle/SubtitleProcessorLibASS.cpp
+    CONFIG(static_libass) {
+        DEFINES *= LINK_STATIC_LIBASS
+    } else {
+        HEADERS *= capi/ass_api.h
+        SOURCES *= capi/ass_api.cpp
+    }
+    SOURCES *= subtitle/SubtitleProcessorLibASS.cpp
 }
 LIBS *= -lUser32
 CONFIG(static_ffmpeg): LIBS *= -llibavcodec -llibavformat -llibswscale -llibavutil -lws2_32 -lstrmiids -lVfw32 -luuid -lSecur32 -lBcrypt -llegacy_stdio_definitions
