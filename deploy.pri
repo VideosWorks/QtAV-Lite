@@ -12,8 +12,8 @@ CONFIG(shared, static|shared) {
             target_file_name = $${target_file_name}.exe
         }
         windeployqt_command = --plugindir \"$${BIN_DIR}\\plugins\" --no-translations --no-compiler-runtime --no-opengl-sw -opengl --list source
-        #CONFIG(enable_small): windeployqt_command = $${windeployqt_command} --no-system-d3d-compiler --no-angle
-        !qtHaveModule(svg): windeployqt_command = $${windeployqt_command} --no-svg
+        CONFIG(no_angle): windeployqt_command = $${windeployqt_command} --no-system-d3d-compiler --no-angle
+        CONFIG(no_svg): windeployqt_command = $${windeployqt_command} --no-svg
         $${TARGET}_libs.commands *= $$quote(\"$${windeployqt}\" $${windeployqt_command} \"$${BIN_DIR}\\$${target_file_name}\")
     } else {
         message("It seems that there is no \"windeployqt\" in \"$$[QT_INSTALL_BINS]\".")
