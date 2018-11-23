@@ -108,6 +108,20 @@ CONFIG(enable_ipp) {
     SOURCES *= output/audio/AudioOutputDSound.cpp
     DEFINES *= QTAV_HAVE_DSOUND=1
 }
+CONFIG(enable_openal) {
+    DEFINES *= QTAV_HAVE_OPENAL=1
+    HEADERS *= capi/openal_api.h
+    SOURCES *= \
+        capi/openal_api.cpp \
+        output/audio/AudioOutputOpenAL.cpp
+    CONFIG(static_openal): DEFINES *= AL_LIBTYPE_STATIC # openal-soft AL_API dllimport error
+    !CONFIG(capi)|CONFIG(enable_openal_link)|CONFIG(static_openal) {
+        DEFINES *= CAPI_LINK_OPENAL
+        LIBS *= \
+            -lOpenAL32 \
+            -lwinmm
+    }
+}
 !CONFIG(no_cuda) {
     DEFINES *= QTAV_HAVE_CUDA=1
     HEADERS *= \
