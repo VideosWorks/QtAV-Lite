@@ -38,8 +38,8 @@
 #else
 #include <ass/ass.h>
 #endif
-#include <cstdarg>
-#include <cstring>
+//#include <cstdarg>
+//#include <cstring>
 
 namespace QtAV {
 void RenderASS(QImage *image, const SubImage &img, int dstX, int dstY);
