@@ -1,7 +1,7 @@
 /******************************************************************************
     QtAV:  Multimedia framework based on Qt and FFmpeg
     Copyright (C) 2012-2016 Wang Bin <wbsecg1@gmail.com>
-    
+
 *   This file is part of QtAV
 
     This library is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@
 #include <QtCore/QWaitCondition>
 #include <QtCore/QVector>
 
-#if QTAV_HAVE(CAPI)
+#if QTAV_HAVE(CAPI) && !defined(LINK_STATIC_OPENAL)
 #define OPENAL_CAPI_NS // CAPI_LINK_OPENAL will override it
 #include "capi/openal_api.h"
 #else

@@ -32,9 +32,8 @@
 #include "utils/internal.h"
 #include "utils/Logger.h"
 
-//#define ASS_CAPI_NS // do not unload() manually!
-//#define CAPI_LINK_ASS
-#ifndef LINK_STATIC_LIBASS
+#if QTAV_HAVE(CAPI) && !defined(LINK_STATIC_LIBASS)
+#define ASS_CAPI_NS // CAPI_LINK_ASS will override it
 #include "capi/ass_api.h"
 #else
 #include <ass/ass.h>
@@ -45,7 +44,7 @@
 namespace QtAV {
 void RenderASS(QImage *image, const SubImage &img, int dstX, int dstY);
 
-#ifndef LINK_STATIC_LIBASS
+#if QTAV_HAVE(CAPI) && !defined(LINK_STATIC_LIBASS)
 class SubtitleProcessorLibASS Q_DECL_FINAL: public SubtitleProcessor, protected ass::api
 #else
 class SubtitleProcessorLibASS Q_DECL_FINAL: public SubtitleProcessor
@@ -139,7 +138,7 @@ SubtitleProcessorLibASS::SubtitleProcessorLibASS()
     , m_renderer(0)
     , m_track(0)
 {
-#ifndef LINK_STATIC_LIBASS
+#if QTAV_HAVE(CAPI) && !defined(LINK_STATIC_LIBASS)
     if (!ass::api::loaded())
         return;
 #endif
@@ -194,7 +193,7 @@ QList<SubtitleFrame> SubtitleProcessorLibASS::frames() const
 
 bool SubtitleProcessorLibASS::process(QIODevice *dev)
 {
-#ifndef LINK_STATIC_LIBASS
+#if QTAV_HAVE(CAPI) && !defined(LINK_STATIC_LIBASS)
     if (!ass::api::loaded())
         return false;
 #endif
@@ -223,7 +222,7 @@ bool SubtitleProcessorLibASS::process(QIODevice *dev)
 
 bool SubtitleProcessorLibASS::process(const QString &path)
 {
-#ifndef LINK_STATIC_LIBASS
+#if QTAV_HAVE(CAPI) && !defined(LINK_STATIC_LIBASS)
     if (!ass::api::loaded())
         return false;
 #endif
@@ -244,7 +243,7 @@ bool SubtitleProcessorLibASS::process(const QString &path)
 
 bool SubtitleProcessorLibASS::processHeader(const QByteArray& codec, const QByteArray &data)
 {
-#ifndef LINK_STATIC_LIBASS
+#if QTAV_HAVE(CAPI) && !defined(LINK_STATIC_LIBASS)
     if (!ass::api::loaded())
         return false;
 #endif
@@ -268,7 +267,7 @@ bool SubtitleProcessorLibASS::processHeader(const QByteArray& codec, const QByte
 
 SubtitleFrame SubtitleProcessorLibASS::processLine(const QByteArray &data, qreal pts, qreal duration)
 {
-#ifndef LINK_STATIC_LIBASS
+#if QTAV_HAVE(CAPI) && !defined(LINK_STATIC_LIBASS)
     if (!ass::api::loaded())
         return SubtitleFrame();
 #endif
