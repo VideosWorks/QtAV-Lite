@@ -201,7 +201,7 @@ CONFIG(enable_libass) {
     SOURCES *= subtitle/SubtitleProcessorLibASS.cpp
 }
 LIBS *= -lUser32
-CONFIG(static_ffmpeg): LIBS *= -llibavcodec -llibavformat -llibswscale -llibavutil -lws2_32 -lstrmiids -lVfw32 -luuid -lSecur32 -lBcrypt -llegacy_stdio_definitions
+CONFIG(static_ffmpeg): LIBS *= -llibavcodec -llibavformat -llibswscale -llibavutil -llibpostproc -lws2_32 -lstrmiids -lVfw32 -luuid -lSecur32 -lBcrypt -llegacy_stdio_definitions -lShell32 -lAdvapi32
 else: LIBS *= -lavcodec -lavformat -lswscale -lavutil
 INCLUDEPATH *= QtAV
 DEPENDPATH *= QtAV
