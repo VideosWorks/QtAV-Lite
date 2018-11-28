@@ -215,13 +215,11 @@ AudioOutputOpenAL::AudioOutputOpenAL(QObject *parent)
     , format_al(AL_FORMAT_STEREO16)
     , state(0)
 {
-#if QTAV_HAVE(CAPI)
-#ifndef CAPI_LINK_OPENAL
+#if QTAV_HAVE(CAPI) && !defined(LINK_STATIC_OPENAL)
     if (!openal::capi::loaded()) {
         available = false;
         return;
     }
-#endif //CAPI_LINK_OPENAL
 #endif
     //setDeviceFeatures(AudioOutput::SetVolume);
     // ensure we have a context to check format support
