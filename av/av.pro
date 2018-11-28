@@ -110,20 +110,18 @@ CONFIG(enable_ipp) {
 }
 CONFIG(enable_openal) {
     DEFINES *= QTAV_HAVE_OPENAL=1
-    !CONFIG(capi)|CONFIG(enable_openal_link) {
-        DEFINES *= CAPI_LINK_OPENAL
-        CONFIG(static_openal): LIBS *= -llibopenal32
-        else: LIBS *= -lopenal32
-        LIBS *= -lwinmm
-    }
     CONFIG(static_openal) {
-        DEFINES *= \
-            AL_LIBTYPE_STATIC \
-            LINK_STATIC_OPENAL
-        LIBS *= -llibopenal32
+        DEFINES *= AL_LIBTYPE_STATIC
+        CONFIG *= enable_openal_link
     } else {
         HEADERS *= capi/openal_api.h
         SOURCES *= capi/openal_api.cpp
+    }
+    !CONFIG(capi)|CONFIG(enable_openal_link) {
+        DEFINES *= CAPI_LINK_OPENAL
+        CONFIG(static_openal): LIBS *= -llibOpenAL32
+        else: LIBS *= -lOpenAL32
+        LIBS *= -lwinmm
     }
     SOURCES *= output/audio/AudioOutputOpenAL.cpp
 }
@@ -186,17 +184,16 @@ DEFINES *= \
     QTAV_HAVE_XAUDIO2=1
 CONFIG(enable_libass) {
     DEFINES *= QTAV_HAVE_LIBASS=1
+    CONFIG(static_libass) {
+        CONFIG *= enable_libass_link
+    } else {
+        HEADERS *= capi/ass_api.h
+        SOURCES *= capi/ass_api.cpp
+    }
     !CONFIG(capi)|CONFIG(enable_libass_link) {
         CONFIG(static_libass): LIBS *= -llibass
         else: LIBS *= -lass
         DEFINES *= CAPI_LINK_ASS
-    }
-    CONFIG(static_libass) {
-        DEFINES *= LINK_STATIC_LIBASS
-        LIBS *= -llibass
-    } else {
-        HEADERS *= capi/ass_api.h
-        SOURCES *= capi/ass_api.cpp
     }
     SOURCES *= subtitle/SubtitleProcessorLibASS.cpp
 }

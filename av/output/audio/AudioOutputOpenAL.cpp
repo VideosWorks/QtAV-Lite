@@ -27,7 +27,7 @@
 #include <QtCore/QWaitCondition>
 #include <QtCore/QVector>
 
-#if QTAV_HAVE(CAPI) && !defined(LINK_STATIC_OPENAL)
+#if QTAV_HAVE(CAPI) && !defined(CAPI_LINK_OPENAL)
 #define OPENAL_CAPI_NS // CAPI_LINK_OPENAL will override it
 #include "capi/openal_api.h"
 #else
@@ -215,7 +215,7 @@ AudioOutputOpenAL::AudioOutputOpenAL(QObject *parent)
     , format_al(AL_FORMAT_STEREO16)
     , state(0)
 {
-#if QTAV_HAVE(CAPI) && !defined(LINK_STATIC_OPENAL)
+#if QTAV_HAVE(CAPI) && !defined(CAPI_LINK_OPENAL)
     if (!openal::capi::loaded()) {
         available = false;
         return;
