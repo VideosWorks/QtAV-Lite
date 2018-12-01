@@ -14,7 +14,7 @@ isEmpty(QTAV_BUILD_VERSION): QTAV_BUILD_VERSION = 0
 contains(TEMPLATE, app): DESTDIR = $${BIN_DIR}
 else:contains(TEMPLATE, lib): DESTDIR = $${LIB_DIR}
 CONFIG(dll): DLLDESTDIR = $${BIN_DIR}
-CONFIG *= c++1z
+CONFIG *= c++11 c++1z
 CONFIG(qt) {
     DEFINES *= \
         QT_DEPRECATED_WARNINGS \
@@ -22,3 +22,4 @@ CONFIG(qt) {
 }
 CONFIG(debug, debug|release): TARGET = $$join(TARGET,,,d)
 CONFIG -= app_bundle
+CONFIG(static, static|shared): CONFIG -= ltcg
