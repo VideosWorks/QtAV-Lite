@@ -7,7 +7,7 @@ contains(QT_ARCH, x86_64) {
     LIB_DIR = $$join(LIB_DIR,,,64)
 }
 CONFIG(static, static|shared) {
-    CONFIG -= ltcg
+    contains(TEMPLATE, lib): CONFIG -= ltcg
     LIB_DIR = $$join(LIB_DIR,,,_static)
 }
 exists($$PWD/version_ci.pri): include($$PWD/version_ci.pri)
