@@ -10,11 +10,6 @@ CONFIG(static, static|shared) {
     contains(TEMPLATE, lib): CONFIG -= ltcg
     LIB_DIR = $$join(LIB_DIR,,,_static)
 }
-exists($$PWD/version_ci.pri): include($$PWD/version_ci.pri)
-isEmpty(QTAV_MAJOR_VERSION): QTAV_MAJOR_VERSION = 1
-isEmpty(QTAV_MINOR_VERSION): QTAV_MINOR_VERSION = 13
-isEmpty(QTAV_PATCH_VERSION): QTAV_PATCH_VERSION = 0
-isEmpty(QTAV_BUILD_VERSION): QTAV_BUILD_VERSION = 0
 contains(TEMPLATE, app): DESTDIR = $${BIN_DIR}
 else:contains(TEMPLATE, lib): DESTDIR = $${LIB_DIR}
 CONFIG(dll): DLLDESTDIR = $${BIN_DIR}
